@@ -1,0 +1,67 @@
+хайлоуд - когда все не влезает на одну тачку
+
+[app+db] (1cpu + 2gb)
+[app+db] (24cpu + 128gb)
+[app+db] (120cpu + 512gb)
+
+
+[app] + [db]
+[app][app] + [db]
+[app]...[app] + [db]
+[app]...[app] + [db](m) + [db](r)
+[app]...[app] + [db](m) + [db]...[db](r)
+[app]...[app] + [db1](m+r)(user) + [db2](m+r)(post)
+[app]...[app] + [db1](m+r)(user a-g) + [db1](m+r)(user g-z) + [db2](m+r)(post)
+[app1]...[app1] + [app2][app2] + [db1](m+r)(user a-g) + [db1](m+r)(user g-z) + [db2](m+r)(post)
+[balancer/dns_balancer] + [app1]...[app1] + [app2][app2] + [db1](m+r)(user a-g) + [db1](m+r)(user g-z) + [db2](m+r)(post)
+[balancer/dns_balancer] + [app1]...[app1] + [app2][app2] + [db1](m+r)(user a-g) + [db1](m+r)(user g-z) + [db2](m+r)(post) + [logs] + [monitoring]
+    test env - [app1] + [app2] + [db1](m+r) + [db2](m+r)(post) + [logs] + [monitoring]
+
+
+появляются вопросы:
+    как балансировать нагрузку? как заводить трафик?
+    как завозить новое железо? как решардить базу?
+    как писать и обновлять код?
+    как мониторить?
+    как писать логи?
+    как безболезненно выкатывать?
+    как тестировать? как делать нагрузочное тестирование?
+
+разные окружения:
+    дев, тест, стейджинг(на 1% живого трафика), предметной
+
+процесс:
+    планирование (устно нельзя ни о чем договориться)
+        jira
+        trello
+        notion
+        статусы тасков:
+            new
+            in progress
+            code review
+            tests review / qa
+            approved
+            deploy
+            tested
+            released
+            close
+    постановка задач:
+        SMART
+        матрица постановки задач
+    траблшутинг
+        сапорт
+            l1,l2,l3
+        команда инцидентов
+    безопасность
+        нужны специалисты иб
+        hackerone
+        app - sec linter
+        acl
+    системные админы
+
+
+git
+regex
+vim/nano, cd, ls, grep, curl, bash
+хорошее владение редактором
+сходить пособеситься

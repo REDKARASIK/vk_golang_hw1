@@ -1,0 +1,29 @@
+<html>
+<head>
+    <style>	
+	    body{
+	        background-color: #3366CC; /* Цвет фона веб-страницы */
+	    } 
+	    h1 {
+	        color: RGB(249, 201, 16); /* Цвет фона под заголовком */
+	        background-color: maroon;
+	    }
+	    p {
+	        color: white; /* Цвет текста */
+	    }
+	    b {
+	    	color: darkgoldenrod;
+	    }
+    </style>
+</head>
+<body>
+	<h1>Users</h1>
+	<p>
+	{{range .Users}}
+		<b>{{.Name}}</b>
+		{{.PrintActive false}}
+		<br />
+	{{end}}
+    </p>
+</body>
+</html>

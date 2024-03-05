@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: godeploy
+spec:
+  type: LoadBalancer # ClusterIP, NodePort
+  selector:
+    app: godeploy
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
