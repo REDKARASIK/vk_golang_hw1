@@ -1,0 +1,12 @@
+<html>
+<body>
+	<h1>Users</h1>
+	{{range .Users}}
+		<b>{{.Name}}</b>,
+		{{if OddUser .}}
+			id {{ printf "\"%02d\"" .ID}} is odd
+		{{end}}
+		<br />
+	{{end}}
+</body>
+</html>

@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  my_super_app:
+    image: my_super_app:latest
+
+  nginx:
+    image: nginx:1.15.3
+    links:
+      - my_super_app:my_super_app
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - 80:80
+
+# docker-compose -f 2_docker-compose.yml up -d
+# docker-compose -f 2_docker-compose.yml stop
+# docker-compose -f 2_docker-compose.yml start
+# docker-compose -f 2_docker-compose.yml down
+
+
+
+
+
+
+
+# scp 2_docker-compose.yml vkedu:/home/centos/ci/2_docker-compose.yml &&\
+# scp -r nginx vkedu:/home/centos/ci
