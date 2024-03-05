@@ -1,4 +1,5 @@
 1)
+```
 user (alice)
     req vk.com/
 
@@ -10,10 +11,11 @@ user (alice)
 
 server
     check get_csrf(base, alice) == csrf_token
-
+```
 
 
 2) double submit 
+```
 user (alice)
     req vk.com/
 
@@ -26,3 +28,4 @@ user (alice)
 
 server
     check csrf_token_cookie == csrf_token_param
+```
