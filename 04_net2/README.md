@@ -3,12 +3,16 @@ user -> html (0 интерактивности)
 user -> backend -> html + execute
 
 Single Page Application
+```
 user -> webAPP -> index.html (содержит js + css + базовая разметка)
     js -> backend -> db
-    js after 30s -> backend (например проверяет нет ли новых сообщений)
-    js after click -> backend (например отправляет письмо по нажатии кнопки)
 
-Frontend [html + js] -> Backend [server + database]
+    js after 30s -> backend (например проверяет нет ли новых сообщений)
+ 
+    js after click -> backend (например отправляет письмо по нажатии кнопки)
+```
+```
+Frontend [html + js] -> Backend [server + database]       
         API = Сетевой протокол(HTTP/WS) + Сериализация(url/form-data/xml)
         RPC (Remote Procedure Call)
         Frontend - [
@@ -58,7 +62,8 @@ Frontend [html + js] -> Backend [server + database]
             }
         ] -> Backend
         ...
-
+```
+```proto
 schema:
 
 scalar Content;
@@ -105,3 +110,4 @@ query {
     }
 } 
 -> [{"id": 1, "Name": "name1"}, {"id": 2, "Name": "name2"}]
+```
