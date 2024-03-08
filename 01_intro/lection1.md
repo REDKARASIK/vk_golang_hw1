@@ -11,7 +11,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 ---
 
-# Заполнить на портале telegram и gitlab
+# Заполнить на портале контакты
 
 ---
 
@@ -23,7 +23,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 # Преподаватели
 
-<div class="grid grid-cols-4 gap-4">
+<div class="grid grid-cols-5 gap-5">
 
 <div>
 
@@ -33,22 +33,9 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 ### Сулаев<br>Антон
 
-###### Тимлид разработки backend'a Почты
+###### Руководитель нескольких команд backend'a Почты
 
 </center>
-</div>
-<div>
-
-![](../common/static/01_lecture/d.fedorova.png)
-
-<center>
-
-### Федорова<br>Дарья
-
-###### Ведущий разработчик команды backend'а Почты
-
-</center>
-
 </div>
 <div>
 
@@ -70,9 +57,35 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 <center>
 
-### Персиянова<br>Вероника
+### Сазонов<br>Александр
 
-###### Разработчик команды backend'a Почты
+###### Разработчик core команды backend'a Почты
+
+</div>
+<div>
+
+  ![](../common/static/01_lecture/v.telbukhov.png)
+
+  <center>
+
+### Тельбухов<br>Владимир
+
+###### Ведущий разработчик ИБ команды backend'а Почты
+
+  </center>
+
+</div>
+<div>
+
+  ![](../common/static/01_lecture/i.evdokimov.png)
+
+  <center>
+
+### Илья<br>Евдокимов
+
+###### Разработчик ИБ команды backend'а Почты
+
+  </center>
 
 </div>
 
@@ -80,13 +93,25 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 ---
 
-# Организационное
+# Организационное. Общее
 
-- Это факультатив. ходить на него - ваше решение
+- Это факультатив. Ходить на него - ваше решение
 - Можно не делать домашку, если она вам не нравится
 - Можно вообще не делать домашки
-- Но если вы делаете домашку - вы её делаете сами
+- Если вы делаете домашку - вы делаете её сами и не обсуждаете решение с другими
 - За списывание отчисляем с курса
+- Если вы дали кому-то списать, то баллы за дз аннулируются
+
+---
+
+# Организационное. Формат взаимодействия
+
+преподаватели $\lll$ менторы $<$ студенты
+
+- Лучше не тянуть с домашкой. Ближе к дедлайну время проверки вырастает
+- Менторы и преподаватели - люди работящие и не всегда сразу же отвечают
+- Вопрос по теме лекции лучше сначала задать ментору, а потом уже преподавателю
+- В общем чате нельзя делиться кодом и обсуждать детали конкретного решения домашки
 
 ---
 
@@ -94,29 +119,29 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 ---
 
-![bg left](../common/static/01_lecture/industry_yoy.svg)
+![bg left:65% 100%](../common/static/01_lecture/firmographic_2023_2.svg)
 
-# Где больше всего используется golang
+## Где больше всего используется golang
 
-(<https://go.dev/blog/survey2021-results>)
+(<https://go.dev/blog/survey2023-h2-results>)
 
 ---
 
-![bg left](../common/static/01_lecture/app_yoy.svg)
+![bg left:65% 100%](../common/static/01_lecture/what_2023_2.svg)
 
-# Для чего больше всего используется golang
+## Для чего больше всего используется golang
 
-(<https://go.dev/blog/survey2021-results>)
+(<https://go.dev/blog/survey2023-h2-results>)
 
 ---
 
 # Кто использует в VK
 
 - Почта
-- Реклама
-- Юла
-- Delivery Club
 - Облако
+- Реклама
+- ICQ
+- Юла
 - Медиапроекты
 - Процессинг
 - vkontakte
@@ -130,24 +155,26 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 <div>
 
 - VK
+- Avito
+- Ozon
+- Tinkoff
+- Сбермаркет
+- Wildberries
 - 2GIS
+- МТС
 - Acronis
-- avito.ru
-- Gett
-- ITooLabs
-- Izvestia
-- iSpring
-- mc² software
+- Get
 
 </div>
 <div>
 
-- OZON.ru
-- Сбермаркет
 - Positive Technologies
-- PostmanQ - High performance Mail Transfer Agent (MTA)
+- ITooLabs
+- Izvestia
+- iSpring
+- mc² software
+- PostmanQ
 - ThetaPad
-- Tinkoff
 - Tochka
 - TRY.FIT
 
@@ -175,15 +202,15 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 # Про сервера и ядра
 
-![bg left:55% 105%](../common/static/01_lecture/50-years-processor-trend.png)
+![bg left:60% 100%](../common/static/01_lecture/50-years-processor-trend.png)
 
 (<https://github.com/karlrupp/microprocessor-trend-data>)
 
 ---
 <!-- https://www.quora.com/Scala-vs-Go-Could-people-help-compare-contrast-these-on-relative-merits-demerits -->
-# Реалии разработки*
+# Реалии разработки
 
-- Меньше кода - проще для понимания. но есть грань.
+- Меньше кода - проще для понимания, но есть грань
 - Код читается чаще чем пишется
 - Код часто живёт дольше, чем мы предполагаем
 - Человек, который тестирует или поддерживает код, чаще всего не его первоначальный автор
@@ -191,21 +218,24 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 ---
 
-# Много кода, много программистов, legacy
+# Что предлагает Golang
 
-- Простой и компактный синтаксис
+- Простой и компактный синтаксис (25 ключевых слов)
+  - в C++ - 60 слов
+  - в pyhon - 36 слов
 - Мало магии и синтаксического сахара
-- Нет даже тернарного оператора
+  - Все касты типов вручную
+  - Нет даже тернарного оператора
 - Ориентация на простоту и читабельность кода
 - Жесткий стиль кода и инструмент для авто-форматирования
 - Множество синтаксических анализаторов
 
 ---
 
-# Много кода, много программистов, legacy
+# Что предлагает Golang
 
 - Быстрая компиляция
-  - Веб-апи почты собирается за 2 минуты
+  - API почты собирается за 3 минуты (1.7млн строк кода)
   - Микросервисы собираются за 1 минуту
 - Тесты из коробки
   - Вместе с покрытием и отчётом
@@ -214,22 +244,23 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 ---
 
-# Много серверов
+# Что предлагает Golang
 
-- Статический бинарь
+- Статический бинарь. Весь код в одном файле
   - Нет dependency hell
 - Удобная работа с зависимостями
   - Просто кладём их в репозиторий
   - Просто скачиваем их с git
 - Кросс-компиляция
+  - Могу на своем макбуке скомпилить .exe
 
 ---
 
 # Много ядер в процессоре
 
-![bg left:40% 100%](../common/static/01_lecture/50-years-processor-trend.png)
+![bg left:50% 100%](../common/static/01_lecture/50-years-processor-trend.png)
 
-- Асинхронный i/o на уровне языка (по модели CSP)
+- Асинхронный i/o на уровне языка, а не либы
   - Нет callback-hell
   - Весь код стандартной библиотеки и внешних либ тоже!
 
@@ -239,9 +270,8 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 # 10 кубиков программиста
 
-- Бизнесу не нужно самовыражение программиста и его игры в песочнице
-
 <table >
+Обычно:
 <tr>
     <td bgcolor="#cfe2f3">язык</td>
     <td bgcolor="#cfe2f3">язык</td>
@@ -258,11 +288,12 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 <br>
 
+- Бизнесу не нужно самовыражение программиста и его игры в песочнице.
 - Бизнесу нужен продукт
 - На go скучно заниматься чем-то кроме продукта
-  - Потому что там не так прикольно делать всякие классные штуки с новым синтаксисом
 
 <table>
+В golang:
 <tr>
     <td bgcolor="#cfe2f3">язык</td>
     <td bgcolor="#cfe2f3">язык</td>
