@@ -58,6 +58,11 @@ func main() {
 		fmt.Println("range map by val", val)
 	}
 
+	// added in go 1.22
+	// for i := range 10 {
+	// 	println(i)
+	// }
+
 	str := "Привет, Мир!"
 	for pos, char := range str {
 		fmt.Printf("%#U at pos %d\n", char, pos)
