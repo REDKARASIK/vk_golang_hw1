@@ -34,7 +34,7 @@
 
 ## После получения доступа к репозиторию
 
-Вам нужно форкнуть текущий репозиторий к себе. Необходимо сделать его приватным и выдать доступы для преподавателей (@a.sulaev, @asazonov, @v.telbukhov)
+Вам нужно форкнуть текущий репозиторий к себе. Необходимо сделать его приватным и выдать доступы для преподавателей (@a.sulaev, @asazonov, @v.telbukhov, @andrei.kiselev, @IlyaEvdokimov)
 и менторов (@tonyblock, @vgoryachkin, @an.storozhev, @a.folomkin, @Toshikx, @loomingsorrowdescent, @burovna, @a.malashenko, @busyleap) с уровнем доступа maintainer.
 Никому другому доступы давать нельзя.
 
