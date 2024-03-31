@@ -8,7 +8,7 @@ func singleIn(in int) int {
 }
 
 // много параметров
-func multIn(a, b int, c int) int {
+func multIn(a, b, c int) int {
 	return a + b + c
 }
 

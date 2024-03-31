@@ -53,8 +53,8 @@ func main() {
 		},
 	}
 
-	acc.SetName("romanov.vasily")
-	acc.Person.SetName("Test")
+	acc.Person.SetName("romanov.vasily")
+	acc.Person.UpdateName("Test")
 
 	// fmt.Printf("%#v \n", acc)
 
