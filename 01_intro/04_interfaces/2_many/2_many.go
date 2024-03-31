@@ -51,8 +51,6 @@ func (a *ApplePay) Pay(amount int) error {
 	return nil
 }
 
-var tmp Payer = &ApplePay{}
-
 // --------------
 
 type Payer interface {

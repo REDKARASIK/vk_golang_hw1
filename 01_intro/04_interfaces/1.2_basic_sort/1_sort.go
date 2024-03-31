@@ -14,7 +14,7 @@ type Students []Student
 
 func (sts Students) Len() int           { return len(sts) }
 func (sts Students) Swap(a, b int)      { sts[a], sts[b] = sts[b], sts[a] }
-func (sts Students) Less(a, b int) bool { return sts[a].Name < sts[b].Name }
+func (sts Students) Less(a, b int) bool { return sts[a].Age < sts[b].Age }
 
 func main() {
 	students := Students{

@@ -67,8 +67,5 @@ func main() {
 	for pos, char := range str {
 		fmt.Printf("%#U at pos %d\n", char, pos)
 	}
-	for i := 0; i < len(str); i++ {
-		fmt.Printf("%#U at pos %d\n", str[i], i)
-	}
 
 }
