@@ -51,16 +51,10 @@ func (a *ApplePay) Pay(amount int) error {
 	return nil
 }
 
-func (a *ApplePay) Ring() error {}
-
 // --------------
 
 type Payer interface {
 	Pay(int) error
-}
-
-type Ringer interface {
-	Ring() error
 }
 
 // --------------
