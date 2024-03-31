@@ -9,11 +9,12 @@ type Person struct {
 }
 
 type Account struct {
+	Person
+
 	Id int
 	// Name    string
 	Cleaner func(string) string
 	Owner   Person
-	Person
 }
 
 func main() {
