@@ -98,6 +98,7 @@ func runOnlineServiceDiscovery(nameResolver *manual.Resolver) {
 				":" + strconv.Itoa(item.Service.Port)
 			servers = append(servers, resolver.Address{Addr: addr})
 		}
-		nameResolver.CC.NewAddress(servers)
+		// nameResolver.CC.NewAddress(servers)
+		nameResolver.UpdateState(resolver.State{Addresses: servers})
 	}
 }
