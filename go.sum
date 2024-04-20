@@ -108,6 +108,8 @@ github.com/envoyproxy/go-control-plane v0.9.9-0.20201210154907-fd9021fe5dad/go.m
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
 github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5 h1:Yzb9+7DPaBjB8zlTR87/ElzFsnQfuHnVUVqpZZIcV5Y=
 github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5/go.mod h1:a2zkGnVExMxdzMo3M0Hi/3sEU+cWnZpSni0O6/Yb/P0=
+github.com/essentialkaos/translit v1.0.1 h1:wFQDJylCTvcAzKqXx6HzaVdgl4wppVS43xf45m2SlJo=
+github.com/essentialkaos/translit v1.0.1/go.mod h1:ylbWodNFD51eQ8HNXrNwm+e5DD+rmHwQ5cC5QyPl1lA=
 github.com/fasthttp/router v1.4.18 h1:elMnlFq527oZd8MHsuUpO6uLDup1exv8rXPfIjClDHk=
 github.com/fasthttp/router v1.4.18/go.mod h1:ZmC20Mn0VgCBbUWFDmnYzFbQYRfdGeKgpkBy0+JioKA=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
