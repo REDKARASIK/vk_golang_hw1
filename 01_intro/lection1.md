@@ -23,7 +23,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 # Преподаватели
 
-<div class="grid grid-cols-5 gap-5">
+<div class="grid grid-cols-4 gap-4">
 
 <div>
 
@@ -33,7 +33,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 ### Сулаев<br>Антон
 
-###### Руководитель нескольких команд backend'a Почты
+###### Руководитель направления разработки API
 
 </center>
 </div>
@@ -45,7 +45,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 ### Киселев<br>Андрей
 
-###### Разработчик кросс-командных решений для backend'а Почты
+###### Разработчик кросс-командных решений для бекенда Почты
 
 </center>
 
@@ -53,37 +53,24 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 </div>
 <div>
 
-![](../common/static/01_lecture/a.sazonov.jpg)
+![](../common/static/01_lecture/i.nemshilov.png)
 
 <center>
 
-### Сазонов<br>Александр
+### Немшилов<br>Иван
 
-###### Разработчик core команды backend'a Почты
-
-</div>
-<div>
-
-  ![](../common/static/01_lecture/v.telbukhov.png)
-
-  <center>
-
-### Тельбухов<br>Владимир
-
-###### Ведущий разработчик ИБ команды backend'а Почты
-
-  </center>
+###### Руководитель команды разработки бекенда Почты
 
 </div>
 <div>
 
-  ![](../common/static/01_lecture/i.evdokimov.png)
+  ![](../common/static/01_lecture/d.labzunova.png)
 
   <center>
 
-### Илья<br>Евдокимов
+### Лабзунова<br>Дарья
 
-###### Разработчик ИБ команды backend'а Почты
+###### Разработчик команды бекенда Авито
 
   </center>
 
@@ -105,8 +92,6 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 ---
 
 # Организационное. Формат взаимодействия
-
-преподаватели $\lll$ менторы $<$ студенты
 
 - Лучше не тянуть с домашкой. Ближе к дедлайну время проверки вырастает
 - Менторы и преподаватели - люди работящие и не всегда сразу же отвечают
