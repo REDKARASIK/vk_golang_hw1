@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"gitlab.vk-golang.com/vk-golang/lectures/01_intro/05_visibility/person"
+	"gitlab.vk-golang.ru/vk-golang/lectures/01_intro/05_visibility/person"
 )
 
 func main() {

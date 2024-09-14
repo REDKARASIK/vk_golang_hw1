@@ -51,6 +51,7 @@
 они могут не успеть посмотреть ваше решение.
 
 <a id="hw_flow"></a>
+
 ## Последовательность выполнения ДЗ
 
 1. Нужно подтянуть изменения основного репозитория в свой форк в ветку master.
@@ -69,13 +70,13 @@
 
 Это нужно для того, чтоб вы могли актуализировать свой форк. иногда в процессе семестра мы дополняем какие-то примеры, описание домашек или тесты.
 
-*Старая инструкция* Если надо просто 1 раз подтянуть и в мастере нет ничего своего
+_Старая инструкция_ Если надо просто 1 раз подтянуть и в мастере нет ничего своего
 
 ```bash
 # будучи в своём репозитории
 
 # либо склонить через https
-git pull https://gitlab.vk-golang.com/vk-golang/lectures.git master
+git pull https://gitlab.vk-golang.ru/vk-golang/lectures.git master
 
 # либо склонить через ssh
 git pull git@gitlab.com:vk-golang/lectures.git master
@@ -93,7 +94,7 @@ git push origin master
 git remote add upstream git@gitlab.com:vk-golang/lectures.git
 
 # Или по https
-git remote add upstream https://gitlab.vk-golang.com/vk-golang/lectures.git
+git remote add upstream https://gitlab.vk-golang.ru/vk-golang/lectures.git
 
 # можно проверить свои remote
 git remote -v
