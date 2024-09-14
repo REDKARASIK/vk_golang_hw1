@@ -1,4 +1,4 @@
-module gitlab.vk-golang.com/vk-golang/lectures
+module gitlab.vk-golang.ru/vk-golang/lectures
 
 go 1.18
 
