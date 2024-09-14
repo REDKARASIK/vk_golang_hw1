@@ -11,7 +11,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	"gitlab.vk-golang.com/vk-golang/lectures/08_microservices/6_grpc_stream/translit"
+	"gitlab.vk-golang.ru/vk-golang/lectures/08_microservices/6_grpc_stream/translit"
 )
 
 func main() {

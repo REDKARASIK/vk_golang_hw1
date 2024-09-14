@@ -9,7 +9,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	"gitlab.vk-golang.com/vk-golang/lectures/08_microservices/4_grpc/session"
+	"gitlab.vk-golang.ru/vk-golang/lectures/08_microservices/4_grpc/session"
 )
 
 var loginFormTmpl = []byte(`

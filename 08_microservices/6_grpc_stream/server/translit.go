@@ -5,7 +5,7 @@ import (
 	"io"
 
 	tr "github.com/essentialkaos/translit"
-	"gitlab.vk-golang.com/vk-golang/lectures/08_microservices/6_grpc_stream/translit"
+	"gitlab.vk-golang.ru/vk-golang/lectures/08_microservices/6_grpc_stream/translit"
 )
 
 type TrServer struct {

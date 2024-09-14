@@ -6,7 +6,7 @@ import (
 	"net"
 	"time"
 
-	"gitlab.vk-golang.com/vk-golang/lectures/08_microservices/4_grpc/session"
+	"gitlab.vk-golang.ru/vk-golang/lectures/08_microservices/4_grpc/session"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
