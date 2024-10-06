@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	tr "github.com/essentialkaos/translit"
+	tr "github.com/essentialkaos/translit/v2"
 	"gitlab.vk-golang.ru/vk-golang/lectures/08_microservices/6_grpc_stream/translit"
 )
 
@@ -39,7 +39,7 @@ func (srv *TrServer) EnRu(inStream translit.Transliteration_EnRuServer) error {
 			return err
 		}
 		out := &translit.Word{
-			Word: tr.ISO9(inWord.Word),
+			Word: tr.ISO9A(inWord.Word),
 		}
 		fmt.Println(inWord.Word, "->", out.Word)
 		inStream.Send(out)
