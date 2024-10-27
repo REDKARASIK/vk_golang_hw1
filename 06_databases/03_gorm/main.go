@@ -146,7 +146,7 @@ func main() {
 	dsn := "root:love@tcp(localhost:3306)/golang?"
 	// указываем кодировку
 	dsn += "&charset=utf8"
-	// отказываемся от prapared statements
+	// отказываемся от prepared statements
 	// параметры подставляются сразу
 	dsn += "&interpolateParams=true"
 
@@ -160,7 +160,7 @@ func main() {
 		Tmpl: template.Must(template.ParseGlob("templates/*")),
 	}
 
-	// в целям упрощения примера пропущена авторизация и csrf
+	// В целях упрощения примера пропущена авторизация и csrf
 	r := mux.NewRouter()
 	r.HandleFunc("/", handlers.List).Methods("GET")
 	r.HandleFunc("/items", handlers.List).Methods("GET")
@@ -174,7 +174,7 @@ func main() {
 	fmt.Println(http.ListenAndServe(":8080", r))
 }
 
-// не используйте такой код в прошакшене
+// Не используйте такой код в продакшене
 // ошибка должна всегда явно обрабатываться
 func __err_panic(err error) {
 	if err != nil {

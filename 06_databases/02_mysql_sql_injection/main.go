@@ -61,7 +61,7 @@ func main() {
 		// мы подставляем в запрос параметр как есть
 		query := fmt.Sprintf("SELECT id, login FROM users WHERE login = '%s' LIMIT 1", inputLogin)
 		// query := fmt.Sprintf("SELECT id, login FROM users WHERE (login = '%s' AND login <> 'admin') LIMIT 1", inputLogin)
-		// SELECT id, login FROM users WHERE login = ''; --
+		// SELECT id, login FROM users WHERE login = '' OR '1'<>'2' LIMIT 1
 
 		body += fmt.Sprintln("Sprint query:", query)
 
@@ -93,7 +93,7 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
-//PanicOnErr panics on error
+// PanicOnErr panics on error
 func PanicOnErr(err error) {
 	if err != nil {
 		panic(err)

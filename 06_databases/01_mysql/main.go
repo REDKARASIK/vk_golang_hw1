@@ -30,14 +30,16 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Не надо так: SELECT * FROM items
 	rows, err := h.DB.QueryContext(r.Context(), "SELECT id, title, updated FROM items")
 	__err_panic(err)
+
+	// надо закрывать соединение, иначе будет течь
+	defer rows.Close()
+
 	for rows.Next() {
 		post := &Item{}
 		err = rows.Scan(&post.Id, &post.Title, &post.Updated)
 		__err_panic(err)
 		items = append(items, post)
 	}
-	// надо закрывать соединение, иначе будет течь
-	rows.Close()
 
 	err = h.Tmpl.ExecuteTemplate(w, "index.html", struct {
 		Items []*Item
@@ -143,7 +145,7 @@ func main() {
 	dsn := "root:love@tcp(localhost:3306)/golang?"
 	// указываем кодировку
 	dsn += "&charset=utf8"
-	// отказываемся от prapared statements
+	// отказываемся от prepared statements
 	// параметры подставляются сразу
 	dsn += "&interpolateParams=true"
 
