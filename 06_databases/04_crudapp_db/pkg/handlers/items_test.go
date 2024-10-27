@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
-	"io/ioutil"
+	"io"
 	"net/http/httptest"
 	"testing"
 
@@ -16,7 +16,7 @@ import (
 
 func TestItemsHandlerList(t *testing.T) {
 
-	// мы передаём t сюда, это надо чтобы получить корректное сообщение если тесты не пройдут
+	// мы передаём t сюда, это надо, чтобы получить корректное сообщение если тесты не пройдут
 	ctrl := gomock.NewController(t)
 
 	// Finish сравнит последовательсноть вызовов и выведет ошибку если последовательность другая
@@ -33,7 +33,7 @@ func TestItemsHandlerList(t *testing.T) {
 		{ID: 1, Title: "some item"},
 	}
 
-	// тут мы записываем последовтаельность вызовов и результат
+	// тут мы записываем последовательность вызовов и результат
 	st.EXPECT().GetAll().Return(resultItems, nil)
 
 	req := httptest.NewRequest("GET", "/", nil)

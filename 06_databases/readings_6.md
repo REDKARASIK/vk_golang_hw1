@@ -1,4 +1,4 @@
-# Сыылки для доп чтения
+# Ссылки для доп чтения
 
 * <http://www.vividcortex.com/hubfs/eBooks/The_Ultimate_Guide_To_Building_Database-Driven_Apps_with_Go.pdf> - в удобной форме информация по основным аспектам работы с database/sql
 * <https://golang.org/pkg/database/sql/> - собственно сам интерфейс к базе
