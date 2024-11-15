@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"strconv"
 	"time"
@@ -53,7 +54,7 @@ func main() {
 		nameResolver.Scheme()+":///",
 		grpc.WithDefaultServiceConfig(`{"loadBalancingConfig": [{"round_robin":{}}]}`),
 		grpc.WithResolvers(nameResolver),
-		grpc.WithInsecure(),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithBlock(),
 		grpc.WithTimeout(time.Second),
 	)
@@ -70,9 +71,9 @@ func main() {
 	ctx := context.Background()
 	step := 1
 	for {
-		// проверяем несуществуюущую сессию
+		// проверяем несуществующую сессию
 		// потому что сейчас между сервисами нет общения
-		// получаем загшулку
+		// получаем заглушку
 		sess, err := sessManager.Check(ctx,
 			&session.SessionID{
 				ID: "not_exist_" + strconv.Itoa(step),
