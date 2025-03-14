@@ -19,7 +19,7 @@ var loginFormTmpl = []byte(`
 `)
 
 var (
-	sessManager *SessionManager
+	sessManager SessionManagerI
 )
 
 func checkSession(r *http.Request) (*Session, error) {

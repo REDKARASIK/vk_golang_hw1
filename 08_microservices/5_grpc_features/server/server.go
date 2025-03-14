@@ -52,7 +52,7 @@ func rateLimiter(ctx context.Context, info *tap.Info) (context.Context, error) {
 func main() {
 	lis, err := net.Listen("tcp", ":8081")
 	if err != nil {
-		log.Fatalln("cant listet port", err)
+		log.Fatalln("can't listen port", err)
 	}
 
 	server := grpc.NewServer(

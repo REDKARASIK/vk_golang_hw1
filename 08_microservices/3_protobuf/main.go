@@ -22,8 +22,8 @@ func main() {
 	fmt.Printf("dataJson\nlen %d\n%v\n", len(dataJson), dataJson)
 
 	/*
-		39 байт
-		{"login":"dmitry","useragent":"Chrome"}
+		40 байт
+		{"login":"vasiliy","useragent":"Chrome"}
 	*/
 
 	dataPb, _ := proto.Marshal(sess)

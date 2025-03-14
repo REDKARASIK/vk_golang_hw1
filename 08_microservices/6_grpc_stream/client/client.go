@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"context"
 	"fmt"
+	"google.golang.org/grpc/credentials/insecure"
 	"io"
 	"log"
 	"os"
@@ -15,16 +16,16 @@ import (
 )
 
 func main() {
-	grcpConn, err := grpc.Dial(
+	grpcConn, err := grpc.Dial(
 		"127.0.0.1:8081",
-		grpc.WithInsecure(),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
 		log.Fatalf("cant connect to grpc")
 	}
-	defer grcpConn.Close()
+	defer grpcConn.Close()
 
-	tr := translit.NewTransliterationClient(grcpConn)
+	tr := translit.NewTransliterationClient(grpcConn)
 
 	ctx := context.Background()
 	stream, _ := tr.EnRu(ctx)
@@ -40,7 +41,7 @@ func main() {
 				fmt.Println("\tstream closed")
 				return
 			} else if err != nil {
-				fmt.Println("\terror happed", err)
+				fmt.Println("\terror happened", err)
 				return
 			}
 			fmt.Println(" <-", outWord.Word)

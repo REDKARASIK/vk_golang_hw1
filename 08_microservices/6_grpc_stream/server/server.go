@@ -2,18 +2,16 @@ package main
 
 import (
 	"fmt"
+	"gitlab.vk-golang.ru/vk-golang/lectures/08_microservices/6_grpc_stream/translit"
+	"google.golang.org/grpc"
 	"log"
 	"net"
-
-	"gitlab.vk-golang.ru/vk-golang/lectures/08_microservices/6_grpc_stream/translit"
-
-	"google.golang.org/grpc"
 )
 
 func main() {
 	lis, err := net.Listen("tcp", ":8081")
 	if err != nil {
-		log.Fatalln("cant listet port", err)
+		log.Fatalln("can't listen port", err)
 	}
 
 	server := grpc.NewServer()

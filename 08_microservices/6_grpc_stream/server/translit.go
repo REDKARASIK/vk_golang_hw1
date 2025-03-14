@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
-	"io"
-
 	tr "github.com/essentialkaos/translit/v2"
 	"gitlab.vk-golang.ru/vk-golang/lectures/08_microservices/6_grpc_stream/translit"
+	"io"
 )
 
 type TrServer struct {
@@ -30,7 +29,7 @@ func (srv *TrServer) EnRu(inStream translit.Transliteration_EnRuServer) error {
 	// 	}
 	// }()
 	for {
-		// time.Sleep(1 * time.Second)
+		// time.Sleep(5 * time.Second)
 		inWord, err := inStream.Recv()
 		if err == io.EOF {
 			return nil

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"time"
 
@@ -52,18 +53,18 @@ func (c *tokenAuth) RequireTransportSecurity() bool {
 
 func main() {
 
-	grcpConn, err := grpc.Dial(
+	grpcConn, err := grpc.Dial(
 		"127.0.0.1:8081",
 		grpc.WithUnaryInterceptor(timingInterceptor),
 		grpc.WithPerRPCCredentials(&tokenAuth{"100500"}),
-		grpc.WithInsecure(),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
 		log.Fatalf("cant connect to grpc")
 	}
-	defer grcpConn.Close()
+	defer grpcConn.Close()
 
-	sessManager := session.NewAuthCheckerClient(grcpConn)
+	sessManager := session.NewAuthCheckerClient(grpcConn)
 
 	ctx := context.Background()
 	md := metadata.Pairs(
@@ -87,7 +88,7 @@ func main() {
 	fmt.Println("header", header)
 	fmt.Println("trailer", trailer)
 
-	// проеряем сессию
+	// проверяем сессию
 	sess, err := sessManager.Check(ctx,
 		&session.SessionID{
 			ID: sessId.ID,
