@@ -25,8 +25,8 @@ func main() {
 	println("-------")
 
 	type Message struct {
-		name  string // 8 b
-		flag1 bool   //1 b
+		name  string // 16 b
+		flag1 bool   // 1 b
 		flag2 bool   // 1 b
 	}
 

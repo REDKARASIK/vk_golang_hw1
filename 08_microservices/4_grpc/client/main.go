@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"net/http"
 	"time"
@@ -90,16 +91,16 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	grcpConn, err := grpc.Dial(
+	grpcConn, err := grpc.Dial(
 		"127.0.0.1:8081",
-		grpc.WithInsecure(),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
 		log.Fatalf("cant connect to grpc")
 	}
-	defer grcpConn.Close()
+	defer grpcConn.Close()
 
-	sessManager = session.NewAuthCheckerClient(grcpConn)
+	sessManager = session.NewAuthCheckerClient(grpcConn)
 
 	http.HandleFunc("/", innerPage)
 	http.HandleFunc("/login", loginPage)
@@ -118,7 +119,7 @@ func logoutPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sessManager.Delete(
+	_, _ = sessManager.Delete(
 		context.Background(),
 		&session.SessionID{
 			ID: cookieSessionID.Value,
