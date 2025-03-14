@@ -27,7 +27,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 <div>
 
-![](../common/static/01_lecture/a.sulaev.png)
+![](../../static/01_lecture/a.sulaev.png)
 
 <center>
 
@@ -39,7 +39,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 </div>
 <div>
 
-![](../common/static/01_lecture/a.kiselev.png)
+![](../../static/01_lecture/a.kiselev.png)
 
 <center>
 
@@ -53,7 +53,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 </div>
 <div>
 
-![](../common/static/01_lecture/i.nemshilov.png)
+![](../../static/01_lecture/i.nemshilov.png)
 
 <center>
 
@@ -64,7 +64,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 </div>
 <div>
 
-  ![](../common/static/01_lecture/d.labzunova.png)
+  ![](../../static/01_lecture/d.labzunova.png)
 
   <center>
 
@@ -120,7 +120,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 ---
 
-![bg left:65% 100%](../common/static/01_lecture/firmographic_2023_2.svg)
+![bg left:65% 100%](../../static/01_lecture/firmographic_2023_2.svg)
 
 ## Где больше всего используется golang
 
@@ -128,7 +128,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 ---
 
-![bg left:65% 100%](../common/static/01_lecture/what_2023_2.svg)
+![bg left:65% 100%](../../static/01_lecture/what_2023_2.svg)
 
 ## Для чего больше всего используется golang
 
@@ -203,7 +203,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 # Про сервера и ядра
 
-![bg left:60% 100%](../common/static/01_lecture/50-years-processor-trend.png)
+![bg left:60% 100%](../../static/01_lecture/50-years-processor-trend.png)
 
 (<https://github.com/karlrupp/microprocessor-trend-data>)
 
@@ -259,7 +259,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
 # Много ядер в процессоре
 
-![bg left:50% 100%](../common/static/01_lecture/50-years-processor-trend.png)
+![bg left:50% 100%](../../static/01_lecture/50-years-processor-trend.png)
 
 - Асинхронный i/o на уровне языка, а не либы
   - Нет callback-hell
