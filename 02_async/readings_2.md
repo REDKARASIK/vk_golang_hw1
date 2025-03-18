@@ -3,6 +3,7 @@
 * https://tour.ardanlabs.com/tour/rus/goroutines/1 - как работают горутины. Интерактивный тур.
 * https://habrahabr.ru/post/308070/ - как работают каналы
 * https://habrahabr.ru/post/333654/ - как работает планировщик ( https://rakyll.org/scheduler/ )
+* https://habr.com/ru/articles/891426/ - Планировщик Go — самый подробный гайд простым языком
 * https://habrahabr.ru/post/271789/ - танцы с мютексами
 * https://habr.com/ru/company/avito/blog/466495/ - как не ошибиться с конкурентностью в go
 
