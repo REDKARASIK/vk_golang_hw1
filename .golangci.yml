@@ -1,71 +1,73 @@
+version: "2"
 run:
-  deadline: 1m
   tests: true
-
-  skip-dirs-use-default: true
-  skip-dirs:
-    - bin$
-    - \.git$
-    - misc$
-    - spec$
-    - pkg$
-    - common$
-
-  skip-files:
-    - "_easyjson.go"
-    - "jwt_example.go"
-    - "pb.go"
-linters-settings:
-  errcheck:
-    check-blank: true
-  govet:
-    check-shadowing: true
-  golint:
-    min-confidence: 0.3
-  gocyclo:
-    min-complexity: 20
-  gocognit:
-    min-complexity: 30
-  dupl:
-    threshold: 200
-  nakedret:
-    max-func-lines: 50
-  funlen:
-    lines: 80
-    statements: 50
-
 linters:
-  disable-all: true
+  default: none
   enable:
-    # - bodyclose
-    # - dupl
     - errcheck
     - goconst
     - gocritic
     - gocyclo
-    - gosimple
     - govet
     - ineffassign
     - nakedret
     - prealloc
-    # - structcheck
-    - stylecheck
-    - typecheck
+    - staticcheck
     - unconvert
     - unparam
     - unused
-    # - unused
-    # - varcheck
-  fast: false
-
+  settings:
+    dupl:
+      threshold: 200
+    errcheck:
+      check-blank: true
+    govet:
+      enable:
+        - shadow
+    funlen:
+      lines: 80
+      statements: 50
+    gocognit:
+      min-complexity: 30
+    gocyclo:
+      min-complexity: 20
+    nakedret:
+      max-func-lines: 50
+    staticcheck:
+      checks:
+        - "all"
+        - "-SA6000"
+        - "-QF1001"
+        - "-SA2002"
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - path: (.+)\.go$
+        text: should have comment
+      - path: (.+)\.go$
+        text: always receives
+      - path: (.+)\.go$
+        text: parameter .* is always
+      - path: (.+)\.go$
+        text: comment on exported .* should be of the form
+    paths:
+      - "bin$"
+      - "\\.git$"
+      - "misc$"
+      - "spec$"
+      - "pkg$"
+      - "common$"
+      - "_easyjson.go"
+      - "jwt_example.go"
+      - "pb.go"
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0
-  exclude:
-    - "should have comment"
-    - "always receives"
-    - "parameter .* is always"
-    - "comment on exported .* should be of the form"
-
-output:
-  format: colored-line-number
+formatters:
+  exclusions:
+    generated: lax
