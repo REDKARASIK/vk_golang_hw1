@@ -8,7 +8,22 @@ import (
 )
 
 func (h *Handler) HandleGetSession(w http.ResponseWriter, r *http.Request) {
+	login := r.URL.Query().Get("login")
 
+	for session, user := range h.Sessions {
+		if user.Login == login {
+			resp := Response{"session_id - " + session}
+			bytes, _ := json.Marshal(&resp)
+			w.Write(bytes)
+			return
+		}
+	}
+
+	log.Printf("session for user %s not found", login)
+	w.Header().Set("Content-Type", "application/json")
+	resp := Response{"no session"}
+	bytes, _ := json.Marshal(&resp)
+	w.Write(bytes)
 }
 
 func (h *Handler) HandleDeleteSession(w http.ResponseWriter, r *http.Request) {
@@ -49,6 +64,4 @@ func (h *Handler) HandleSession(w http.ResponseWriter, r *http.Request) {
 	resp := Response{"wrong method"}
 	bytes, _ := json.Marshal(&resp)
 	w.Write(bytes)
-	return
-
 }
