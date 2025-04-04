@@ -15,6 +15,8 @@ import (
 	// tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
+// ! ngrok deprecated !
+
 /*
 для heroku
 находясь в корне репы
@@ -24,6 +26,9 @@ git subtree push --prefix 04_net2/05_bot heroku master
 // https://api.telegram.org/bot1953480583:AAEU7eBaZnCUt525oUkCMRCQxK1TJmaoVd4/getUpdates
 
 // ngrok http 8080
+
+// ssh -R 80:localhost:8080 serveo.net
+
 var (
 
 	// хранить секреты в коде плохо, поэтому используем конфиги
@@ -35,7 +40,11 @@ var (
 	WebhookURL = flag.String("tg.webhook", "", "webhook addr for telegram")
 
 	// запуск выглядит так:
+	// ! ngrok deprecated !
 	// go run bot.go -tg.token="1953480583:AAEU7eBaZnCUt525oUkCMRCQxK1TJmaoVd4" -tg.webhook="https://5872-95-165-1-28.eu.ngrok.io"
+
+	// serveo.net
+	// go run bot.go -tg.token="1953480583:AAEU7eBaZnCUt525oUkCMRCQxK1TJmaoVd4" -tg.webhook="https://addb16f030b88ecaae1f7c65378b75b5.serveo.net"
 )
 
 var rss = map[string]string{

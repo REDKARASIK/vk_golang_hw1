@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"log"
 	"math/rand"
 	"net/http"
 	"time"
@@ -43,7 +45,6 @@ func NewMyHandler() *MyHandler {
 // http://127.0.0.1:8080/login?login=rvasily&password=love
 
 func (api *MyHandler) Login(w http.ResponseWriter, r *http.Request) {
-
 	user, ok := api.users[r.FormValue("login")]
 	if !ok {
 		http.Error(w, `no user`, 404)
@@ -66,13 +67,11 @@ func (api *MyHandler) Login(w http.ResponseWriter, r *http.Request) {
 	}
 	http.SetCookie(w, cookie)
 	w.Write([]byte(SID))
-
 }
 
 func (api *MyHandler) Logout(w http.ResponseWriter, r *http.Request) {
-
 	session, err := r.Cookie("session_id")
-	if err == http.ErrNoCookie {
+	if errors.Is(err, http.ErrNoCookie) {
 		http.Error(w, `no sess`, 401)
 		return
 	}
@@ -96,9 +95,9 @@ func (api *MyHandler) Root(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if authorized {
-		w.Write([]byte("autrorized"))
+		w.Write([]byte("authorized"))
 	} else {
-		w.Write([]byte("not autrorized"))
+		w.Write([]byte("not authorized"))
 	}
 }
 
@@ -110,5 +109,9 @@ func main() {
 	r.HandleFunc("/login", api.Login)
 	r.HandleFunc("/logout", api.Logout)
 
-	http.ListenAndServe(":8080", r)
+	log.Println("start serving :8080")
+	err := http.ListenAndServe(":8080", r)
+	if err != nil {
+		log.Printf("start server error %s", err.Error())
+	}
 }

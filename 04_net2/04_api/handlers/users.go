@@ -5,12 +5,11 @@ import (
 	"net/http"
 )
 
-func (h *Handler) HandleUsers(w http.ResponseWriter, r *http.Request) {
-
-	usersList := []*User{}
+func (h *Handler) HandleUsers(w http.ResponseWriter, _ *http.Request) {
+	usersList := make([]User, 0)
 
 	for _, user := range h.Users {
-		usersList = append(usersList, user)
+		usersList = append(usersList, *user)
 	}
 
 	bytes, _ := json.Marshal(&usersList)
