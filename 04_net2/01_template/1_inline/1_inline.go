@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
-	// "text/template"
-	"html/template"
+	"text/template"
+	// "html/template"
 )
 
 type tplParams struct {
