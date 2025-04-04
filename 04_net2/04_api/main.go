@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"sync"
 
@@ -19,7 +20,7 @@ import (
 func main() {
 
 	users := map[string]*handlers.User{
-		"test": &handlers.User{
+		"test": {
 			ID:       1,
 			Login:    "test",
 			Password: "test",
@@ -41,5 +42,8 @@ func main() {
 	http.HandleFunc("/users/", handler.HandleUsers)
 	http.HandleFunc("/session/", handler.HandleSession)
 
-	http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Printf("start server error: %s", err.Error())
+	}
 }

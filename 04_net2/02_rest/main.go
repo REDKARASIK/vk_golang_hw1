@@ -30,7 +30,7 @@ type BooksHandler struct {
 	store *storage.BookStore
 }
 
-func (api *BooksHandler) List(w http.ResponseWriter, r *http.Request) {
+func (api *BooksHandler) List(w http.ResponseWriter, _ *http.Request) {
 
 	books, err := api.store.GetBooks()
 	if err != nil {
@@ -139,5 +139,8 @@ func main() {
 	r.HandleFunc("/book/{id:[0-9]+}", api.Change).Methods("PUT")
 
 	log.Println("start serving :8080")
-	http.ListenAndServe(":8080", r)
+	err := http.ListenAndServe(":8080", r)
+	if err != nil {
+		log.Printf("start server error: %s", err.Error())
+	}
 }

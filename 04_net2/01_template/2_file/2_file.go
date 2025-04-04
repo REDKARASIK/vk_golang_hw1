@@ -17,10 +17,10 @@ func main() {
 	tmpl := template.Must(template.ParseFiles("users.html"))
 
 	users := []User{
-		User{1, "Anton", true},
+		{1, "Anton", true},
 		// xss
-		User{2, "<script>alert(document.cookie)</script>", false},
-		User{3, "Nikita", true},
+		{2, "<script>alert(document.cookie)</script>", false},
+		{3, "Nikita", true},
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

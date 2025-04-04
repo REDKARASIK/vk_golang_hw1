@@ -3,12 +3,17 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"text/template"
+	// "text/template"
+	"html/template"
 )
 
 type tplParams struct {
 	URL     string
 	Browser string
+}
+
+type htmlParams struct {
+	Name string
 }
 
 const EXAMPLE = `
@@ -17,7 +22,7 @@ Browser {{.Browser}}
 you at {{.URL}}
 `
 
-// var someHtml = "<html><body>Hello, <b>{{.Name}}</b>!</body></html>"
+// const SOME_HTML = "<html><body>Hello, <b>{{.Name}}</b>!</body></html>"
 
 var tmpl = template.New("123")
 
@@ -27,11 +32,17 @@ func handle(w http.ResponseWriter, r *http.Request) {
 		Browser: r.UserAgent(),
 	}
 
+	//hParams := htmlParams{
+	//	Name: "world",
+	//}
+
 	tmpl.Execute(w, params)
+	// tmpl.Execute(w, hParams)
 }
 
 func main() {
 	tmpl, _ = tmpl.Parse(EXAMPLE)
+	// tmpl, _ = tmpl.Parse(SOME_HTML)
 
 	http.HandleFunc("/", handle)
 
