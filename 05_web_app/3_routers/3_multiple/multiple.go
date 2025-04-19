@@ -9,18 +9,6 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func RegularRequest(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Request with averange amout of logic\n")
-}
-
-func FastRequest(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	fmt.Fprint(w, "Request with high hitrate\n")
-}
-
-func ComplexRequest(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Request with complex routing logic\n")
-}
-
 func main() {
 	fastApiHandler := httprouter.New()
 	fastApiHandler.GET("/fast/:id", FastRequest)
@@ -39,4 +27,16 @@ func main() {
 
 	fmt.Println("starting server at :8080")
 	log.Fatal(http.ListenAndServe(":8080", siteMux))
+}
+
+func FastRequest(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	fmt.Fprint(w, "Request with high hitrate\n")
+}
+
+func ComplexRequest(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Request with complex routing logic\n")
+}
+
+func RegularRequest(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Request with average amount of logic\n")
 }

@@ -9,6 +9,15 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
+func main() {
+	router := fasthttprouter.New()
+	router.GET("/", Index)
+	router.GET("/users/{id}", GetUser)
+
+	fmt.Println("starting server at :8080")
+	log.Fatal(fasthttp.ListenAndServe(":8080", router.Handler))
+}
+
 func Index(ctx *fasthttp.RequestCtx) {
 	ctx.SetContentType("application/json")
 	ctx.SetStatusCode(fasthttp.StatusOK)
@@ -21,13 +30,4 @@ func Index(ctx *fasthttp.RequestCtx) {
 
 func GetUser(ctx *fasthttp.RequestCtx) {
 	fmt.Fprintf(ctx, "you try to see user %s\n", ctx.UserValue("id"))
-}
-
-func main() {
-	router := fasthttprouter.New()
-	router.GET("/", Index)
-	router.GET("/users/{id}", GetUser)
-
-	fmt.Println("starting server at :8080")
-	log.Fatal(fasthttp.ListenAndServe(":8080", router.Handler))
 }

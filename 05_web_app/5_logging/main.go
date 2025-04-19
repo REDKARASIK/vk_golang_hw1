@@ -26,16 +26,23 @@ func (ac *AccessLogger) accessLogMiddleware(next http.Handler) http.Handler {
 		start := time.Now()
 		next.ServeHTTP(w, r)
 
-		fmt.Printf("FMT [%s] %s, %s %s\n",
-			r.Method, r.RemoteAddr, r.URL.Path, time.Since(start))
+		fmt.Printf(
+			"FMT [%s] %s, %s %s\n",
+			r.Method, r.RemoteAddr, r.URL.Path, time.Since(start),
+		)
 
-		log.Printf("LOG [%s] %s, %s %s\n",
-			r.Method, r.RemoteAddr, r.URL.Path, time.Since(start))
+		log.Printf(
+			"LOG [%s] %s, %s %s\n",
+			r.Method, r.RemoteAddr, r.URL.Path, time.Since(start),
+		)
 
-		ac.StdLogger.Printf("[%s] %s, %s %s\n",
-			r.Method, r.RemoteAddr, r.URL.Path, time.Since(start))
+		ac.StdLogger.Printf(
+			"[%s] %s, %s %s\n",
+			r.Method, r.RemoteAddr, r.URL.Path, time.Since(start),
+		)
 
-		ac.ZapLogger.Info(r.URL.Path,
+		ac.ZapLogger.Info(
+			r.URL.Path,
 			zap.String("method", r.Method),
 			zap.String("remote_addr", r.RemoteAddr),
 			zap.String("url", r.URL.Path),
@@ -50,24 +57,23 @@ func (ac *AccessLogger) accessLogMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-// -----------
-
 func main() {
 
 	addr := "localhost"
 	port := 8080
 
-	// std
-	fmt.Printf("STD starting server at %s:%d\n", addr, port)
+	// std fmt
+	fmt.Printf("STD fmt starting server at %s:%d\n", addr, port)
 
-	// std
-	log.Printf("STD starting server at %s:%d\n", addr, port)
+	// std log
+	log.Printf("STD log starting server at %s:%d\n", addr, port)
 
 	// zap
 	// у zap-а нет логгера по-умолчанию
 	zapLogger, _ := zap.NewProduction()
 	defer zapLogger.Sync()
-	zapLogger.Info("starting server",
+	zapLogger.Info(
+		"starting server",
 		zap.String("logger", "ZAP"),
 		zap.String("host", addr),
 		zap.Int("port", port),
