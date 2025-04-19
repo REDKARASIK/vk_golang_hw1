@@ -41,7 +41,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	_, err = govalidator.ValidateStruct(msg)
 
 	if err != nil {
-
 		if allErrs, ok := err.(govalidator.Errors); ok {
 			for _, fld := range allErrs.Errors() {
 				data := []byte(fmt.Sprintf("field: %#v\n\n", fld))
@@ -62,14 +61,19 @@ func main() {
 }
 
 func init() {
-	govalidator.CustomTypeTagMap.Set("msgSubject", govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
-		subject, ok := i.(string)
-		if !ok {
-			return false
-		}
-		if len(subject) == 0 || len(subject) > 10 {
-			return false
-		}
-		return true
-	}))
+	govalidator.CustomTypeTagMap.Set(
+		"msgSubject",
+		govalidator.CustomTypeValidator(func(i interface{}, o interface{}) bool {
+			subject, ok := i.(string)
+			if !ok {
+				return false
+			}
+
+			if len(subject) == 0 || len(subject) > 10 {
+				return false
+			}
+
+			return true
+		}),
+	)
 }

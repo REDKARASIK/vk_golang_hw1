@@ -44,6 +44,7 @@ func main() {
 	router.GET("/users", List)
 	router.PUT("/users", Create)
 	router.GET("/users/:id", Get)
+
 	// router.POST("/users/:login", Update)
 	router.HandlerFunc(http.MethodPost, "/users/:login", UpdateHandle)
 

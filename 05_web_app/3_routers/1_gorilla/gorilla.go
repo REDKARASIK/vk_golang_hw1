@@ -43,24 +43,18 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", List)
 
-	r.HandleFunc("/users", List).
-		Host("localhost")
+	r.HandleFunc("/users", List).Host("localhost")
 
-	r.HandleFunc("/users", ListVK).
-		Host("{subdomain}.vk.ru")
+	r.HandleFunc("/users", ListVK).Host("{subdomain}.vk.ru")
 
-	r.HandleFunc("/users", Update).
-		Methods("PUT")
+	r.HandleFunc("/users", Update).Methods("PUT")
 
-		/*
-		   See anything wrong?
-		*/
+	/*
+	   See anything wrong?
+	*/
 	r.HandleFunc("/users/{login:[0-9a-z]+}", Update)
 	r.HandleFunc("/users/{id:[0-9]+}", Get)
-
-	r.HandleFunc("/users/{login}", Create).
-		Methods("POST").
-		Headers("X-Auth", "test")
+	r.HandleFunc("/users/{login}", Create).Methods("POST").Headers("X-Auth", "test")
 
 	fmt.Println("starting server at :8080")
 	log.Fatal(http.ListenAndServe(":8080", r))

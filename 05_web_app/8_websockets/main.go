@@ -20,6 +20,28 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
+func main() {
+	tmpl := template.Must(template.ParseFiles("index.html"))
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		tmpl.Execute(w, nil)
+	})
+
+	http.HandleFunc("/notifications", notificationsHandler)
+
+	fmt.Println("starting server at :8080")
+	http.ListenAndServe(":8080", nil)
+}
+
+func notificationsHandler(w http.ResponseWriter, r *http.Request) {
+	ws, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	go sendNewMsgNotifications(ws)
+}
+
 func sendNewMsgNotifications(client *websocket.Conn) {
 	ticker := time.NewTicker(3 * time.Second)
 	for {
@@ -37,30 +59,12 @@ func sendNewMsgNotifications(client *websocket.Conn) {
 	}
 }
 
-func main() {
-	tmpl := template.Must(template.ParseFiles("index.html"))
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		tmpl.Execute(w, nil)
-	})
-
-	http.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
-		ws, err := upgrader.Upgrade(w, r, nil)
-		if err != nil {
-			log.Fatal(err)
-		}
-		go sendNewMsgNotifications(ws)
-	})
-
-	fmt.Println("starting server at :8080")
-	http.ListenAndServe(":8080", nil)
-}
-
 func newMessage() []byte {
 	data, _ := json.Marshal(map[string]string{
 		"email":   fake.EmailAddress(),
 		"name":    fake.FirstName() + " " + fake.LastName(),
 		"subject": fake.Product() + " " + fake.Model(),
 	})
+
 	return data
 }
