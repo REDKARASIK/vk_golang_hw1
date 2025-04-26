@@ -19,7 +19,7 @@ func TestItemsHandlerList(t *testing.T) {
 	// мы передаём t сюда, это надо, чтобы получить корректное сообщение если тесты не пройдут
 	ctrl := gomock.NewController(t)
 
-	// Finish сравнит последовательсноть вызовов и выведет ошибку если последовательность другая
+	// Finish сравнит последовательность вызовов и выведет ошибку если последовательность другая
 	defer ctrl.Finish()
 
 	st := items.NewMockItemRepo(ctrl)
@@ -51,7 +51,7 @@ func TestItemsHandlerList(t *testing.T) {
 	}
 
 	// GetPhotos error
-	// тут мы записываем последовтаельность вызовов и результат
+	// тут мы записываем последовательность вызовов и результат
 	st.EXPECT().GetAll().Return(nil, fmt.Errorf("no results"))
 
 	req = httptest.NewRequest("GET", "/", nil)
@@ -80,5 +80,4 @@ func TestItemsHandlerList(t *testing.T) {
 		t.Errorf("expected resp status 500, got %d", resp.StatusCode)
 		return
 	}
-
 }

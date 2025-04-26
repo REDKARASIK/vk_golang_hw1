@@ -35,7 +35,7 @@ func (h *ItemsHandler) List(w http.ResponseWriter, r *http.Request) {
 	})
 	if err != nil {
 		h.Logger.Error("ExecuteTemplate err", err)
-		http.Error(w, `Template errror`, http.StatusInternalServerError)
+		http.Error(w, `Template error`, http.StatusInternalServerError)
 		return
 	}
 }
@@ -44,7 +44,7 @@ func (h *ItemsHandler) AddForm(w http.ResponseWriter, r *http.Request) {
 	err := h.Tmpl.ExecuteTemplate(w, "create.html", nil)
 	if err != nil {
 		h.Logger.Error("ExecuteTemplate err", err)
-		http.Error(w, `Template errror`, http.StatusInternalServerError)
+		http.Error(w, `Template error`, http.StatusInternalServerError)
 		return
 	}
 }
@@ -93,7 +93,7 @@ func (h *ItemsHandler) Edit(w http.ResponseWriter, r *http.Request) {
 	err = h.Tmpl.ExecuteTemplate(w, "edit.html", item)
 	if err != nil {
 		h.Logger.Error("ExecuteTemplate err", err)
-		http.Error(w, `Template errror`, http.StatusInternalServerError)
+		http.Error(w, `Template error`, http.StatusInternalServerError)
 		return
 	}
 }

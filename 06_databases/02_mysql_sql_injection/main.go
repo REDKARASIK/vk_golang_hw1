@@ -26,11 +26,11 @@ var loginFormTmpl = `
 
 func main() {
 
-	// основные настройки к базе
+	// основные настройки подключения к базе
 	dsn := "root:love@tcp(localhost:3306)/golang?"
 	// указываем кодировку
 	dsn += "&charset=utf8"
-	// отказываемся от prapared statements
+	// отказываемся от prepared statements
 	// параметры подставляются сразу
 	dsn += "&interpolateParams=true"
 
@@ -60,8 +60,10 @@ func main() {
 		// параметры не экранированы должным образом
 		// мы подставляем в запрос параметр как есть
 		query := fmt.Sprintf("SELECT id, login FROM users WHERE login = '%s' LIMIT 1", inputLogin)
-		// query := fmt.Sprintf("SELECT id, login FROM users WHERE (login = '%s' AND login <> 'admin') LIMIT 1", inputLogin)
 		// SELECT id, login FROM users WHERE login = '' OR '1'<>'2' LIMIT 1
+		// query := fmt.Sprintf("SELECT id, login FROM users WHERE (login = '%s' AND login <> 'admin') LIMIT 1", inputLogin)
+		// inputLogin: admin') #
+		// SELECT id, login FROM users WHERE (login = 'admin') #' AND login <> 'admin') LIMIT 1
 
 		body += fmt.Sprintln("Sprint query:", query)
 

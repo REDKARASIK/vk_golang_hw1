@@ -80,12 +80,13 @@ func uploadPage(w http.ResponseWriter, r *http.Request) {
 		"",                   // exchange
 		ImageResizeQueueName, // routing key
 		false,                // mandatory
-		false,
+		false,                // immediate
 		amqp.Publishing{
 			DeliveryMode: amqp.Persistent,
 			ContentType:  "text/plain",
 			Body:         data,
-		})
+		},
+	)
 	panicOnError("cant publish task", err)
 
 	fmt.Fprintf(w, "Upload %d bytes successful\n", writtenBytes)

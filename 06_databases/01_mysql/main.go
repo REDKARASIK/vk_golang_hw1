@@ -29,7 +29,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	items := []*Item{}
 	// Не надо так: SELECT * FROM items
 	rows, err := h.DB.QueryContext(r.Context(), "SELECT id, title, updated FROM items")
-	__err_panic(err)
+	panicOnErr(err)
 
 	// надо закрывать соединение, иначе будет течь
 	defer rows.Close()
@@ -37,7 +37,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		post := &Item{}
 		err = rows.Scan(&post.Id, &post.Title, &post.Updated)
-		__err_panic(err)
+		panicOnErr(err)
 		items = append(items, post)
 	}
 
@@ -67,12 +67,12 @@ func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
 		r.FormValue("title"),
 		r.FormValue("description"),
 	)
-	__err_panic(err)
+	panicOnErr(err)
 
 	affected, err := result.RowsAffected()
-	__err_panic(err)
+	panicOnErr(err)
 	lastID, err := result.LastInsertId()
-	__err_panic(err)
+	panicOnErr(err)
 
 	fmt.Println("Insert - RowsAffected", affected, "LastInsertId: ", lastID)
 
@@ -82,14 +82,14 @@ func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Edit(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
-	__err_panic(err)
+	panicOnErr(err)
 
 	post := &Item{}
-	// QueryRow сам закрывает коннект
 	row := h.DB.QueryRow("SELECT id, title, updated, description FROM items WHERE id = ?", id)
 
+	// Scan сам закрывает коннект
 	err = row.Scan(&post.Id, &post.Title, &post.Updated, &post.Description)
-	__err_panic(err)
+	panicOnErr(err)
 
 	err = h.Tmpl.ExecuteTemplate(w, "edit.html", post)
 	if err != nil {
@@ -101,17 +101,17 @@ func (h *Handler) Edit(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
-	__err_panic(err)
+	panicOnErr(err)
 
 	// в целям упрощения примера пропущена валидация
 	result, err := h.DB.Exec(
 		"UPDATE items SET `title` = ?, `description` = ?, `updated` = ? WHERE id = ?",
 		r.FormValue("title"), r.FormValue("description"), "user", id,
 	)
-	__err_panic(err)
+	panicOnErr(err)
 
 	affected, err := result.RowsAffected()
-	__err_panic(err)
+	panicOnErr(err)
 
 	fmt.Println("Update - RowsAffected", affected)
 
@@ -121,16 +121,16 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
-	__err_panic(err)
+	panicOnErr(err)
 
 	result, err := h.DB.Exec(
 		"DELETE FROM items WHERE id = ?",
 		id,
 	)
-	__err_panic(err)
+	panicOnErr(err)
 
 	affected, err := result.RowsAffected()
-	__err_panic(err)
+	panicOnErr(err)
 
 	fmt.Println("Delete - RowsAffected", affected)
 
@@ -141,7 +141,7 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	// основные настройки к базе
+	// основные настройки подключения к базе
 	dsn := "root:love@tcp(localhost:3306)/golang?"
 	// указываем кодировку
 	dsn += "&charset=utf8"
@@ -179,7 +179,7 @@ func main() {
 
 // не используйте такой код в прошакшене
 // ошибка должна всегда явно обрабатываться
-func __err_panic(err error) {
+func panicOnErr(err error) {
 	if err != nil {
 		panic(err)
 	}
