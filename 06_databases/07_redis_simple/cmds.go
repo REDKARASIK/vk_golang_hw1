@@ -14,7 +14,8 @@ func getRecord(mkey string) (string, error) {
 	println("get", mkey)
 	// получает запись, https://redis.io/commands/get
 	item, err := redis.String(c.Do("GET", mkey))
-	// если записи нету, то для этого есть специальная ошибка, её надо обрабатывать отдеьно, это почти штатная ситуация, а не что-то страшное
+	// если записи нету, то для этого есть специальная ошибка, её надо обрабатывать отдельно.
+	// это почти штатная ситуация, а не что-то страшное
 	if err == redis.ErrNil {
 		fmt.Println("Record not found in redis (return value is nil)")
 		return "", redis.ErrNil

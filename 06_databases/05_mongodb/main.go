@@ -29,14 +29,13 @@ type Handler struct {
 }
 
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
-
 	items := []*Item{}
 
 	// bson.M{} - это типа условия для поиска
 	c, err := h.Items.Find(r.Context(), bson.M{})
-	__err_panic(err)
+	panicOnErr(err)
 	err = c.All(r.Context(), &items)
-	__err_panic(err)
+	panicOnErr(err)
 
 	err = h.Tmpl.ExecuteTemplate(w, "index.html", struct {
 		Items []*Item
@@ -58,7 +57,6 @@ func (h *Handler) AddForm(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
-
 	newItem := bson.M{
 		"_id":         primitive.NewObjectID(),
 		"title":       r.FormValue("title"),
@@ -66,7 +64,7 @@ func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
 		"some_filed":  123,
 	}
 	_, err := h.Items.InsertOne(r.Context(), newItem)
-	__err_panic(err)
+	panicOnErr(err)
 
 	fmt.Println("Insert - LastInsertId:", newItem["_id"])
 
@@ -87,7 +85,7 @@ func (h *Handler) Edit(w http.ResponseWriter, r *http.Request) {
 
 	post := &Item{}
 	err = h.Items.FindOne(r.Context(), bson.M{"_id": id}).Decode(post)
-	__err_panic(err)
+	panicOnErr(err)
 
 	err = h.Tmpl.ExecuteTemplate(w, "edit.html", post)
 	if err != nil {
@@ -110,7 +108,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 
 	post := &Item{}
 	err = h.Items.FindOne(r.Context(), bson.M{"_id": id}).Decode(&post)
-	__err_panic(err)
+	panicOnErr(err)
 
 	post.Title = r.FormValue("title")
 	post.Description = r.FormValue("description")
@@ -130,7 +128,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	)
 	affected := 1
 	if err != nil {
-		__err_panic(err)
+		panicOnErr(err)
 	} else if res.ModifiedCount == 0 {
 		affected = 0
 	}
@@ -155,7 +153,7 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	res, err := h.Items.DeleteOne(r.Context(), bson.M{"_id": id})
 	affected := 1
 	if err != nil {
-		__err_panic(err)
+		panicOnErr(err)
 	} else if res.DeletedCount == 0 {
 		affected = 0
 	}
@@ -168,11 +166,11 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 func main() {
 	ctx := context.Background()
 	sess, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost"))
-	__err_panic(err)
+	panicOnErr(err)
 
 	collection := sess.Database("golang").Collection("items")
 
-	// если коллекции не будет, то она создасться автоматически
+	// если коллекции не будет, то она создастся автоматически
 	// для монги нет такого красивого дампа SQL, так что я вставляю демо-запись если коллекция пуста
 	if n, _ := collection.CountDocuments(ctx, bson.M{}); n == 0 {
 		collection.InsertOne(ctx, &Item{
@@ -206,12 +204,12 @@ func main() {
 
 	fmt.Println("starting server at :8088")
 	err = http.ListenAndServe(":8088", r)
-	__err_panic(err)
+	panicOnErr(err)
 }
 
 // не используйте такой код в прошакшене
 // ошибка должна всегда явно обрабатываться
-func __err_panic(err error) {
+func panicOnErr(err error) {
 	if err != nil {
 		panic(err)
 	}
