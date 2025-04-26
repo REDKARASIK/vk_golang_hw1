@@ -26,7 +26,7 @@ func (h *UserHandler) Index(w http.ResponseWriter, r *http.Request) {
 
 	err = h.Tmpl.ExecuteTemplate(w, "login.html", nil)
 	if err != nil {
-		http.Error(w, `Template errror`, http.StatusInternalServerError)
+		http.Error(w, `Template error`, http.StatusInternalServerError)
 		return
 	}
 }

@@ -35,12 +35,11 @@ type Handler struct {
 }
 
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
-
 	items := []*Item{}
 
 	db := h.DB.Find(&items)
 	err := db.Error
-	__err_panic(err)
+	panicOnErr(err)
 
 	err = h.Tmpl.ExecuteTemplate(w, "index.html", struct {
 		Items []*Item
@@ -62,14 +61,13 @@ func (h *Handler) AddForm(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
-
 	newItem := &Item{
 		Title:       r.FormValue("title"),
 		Description: r.FormValue("description"),
 	}
 	db := h.DB.Create(&newItem)
 	err := db.Error
-	__err_panic(err)
+	panicOnErr(err)
 	affected := db.RowsAffected
 
 	fmt.Println("Insert - RowsAffected", affected, "LastInsertId: ", newItem.Id)
@@ -80,7 +78,7 @@ func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Edit(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
-	__err_panic(err)
+	panicOnErr(err)
 
 	post := &Item{
 		Id: id,
@@ -91,7 +89,7 @@ func (h *Handler) Edit(w http.ResponseWriter, r *http.Request) {
 	if err == gorm.ErrRecordNotFound {
 		fmt.Println("Record not found", id)
 	} else {
-		__err_panic(err)
+		panicOnErr(err)
 	}
 
 	err = h.Tmpl.ExecuteTemplate(w, "edit.html", post)
@@ -104,7 +102,7 @@ func (h *Handler) Edit(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
-	__err_panic(err)
+	panicOnErr(err)
 
 	post := &Item{}
 	h.DB.Find(post, id)
@@ -115,7 +113,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 
 	db := h.DB.Save(post)
 	err = db.Error
-	__err_panic(err)
+	panicOnErr(err)
 	affected := db.RowsAffected
 
 	fmt.Println("Update - RowsAffected", affected)
@@ -126,11 +124,11 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
-	__err_panic(err)
+	panicOnErr(err)
 
 	db := h.DB.Delete(&Item{Id: id})
 	err = db.Error
-	__err_panic(err)
+	panicOnErr(err)
 	affected := db.RowsAffected
 
 	fmt.Println("Delete - RowsAffected", affected)
@@ -142,7 +140,7 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	// основные настройки к базе
+	// основные настройки подключения к базе
 	dsn := "root:love@tcp(localhost:3306)/golang?"
 	// указываем кодировку
 	dsn += "&charset=utf8"
@@ -151,9 +149,8 @@ func main() {
 	dsn += "&interpolateParams=true"
 
 	db, err := gorm.Open("mysql", dsn)
-	db.DB()
 	db.DB().Ping()
-	__err_panic(err)
+	panicOnErr(err)
 
 	handlers := &Handler{
 		DB:   db,
@@ -176,7 +173,7 @@ func main() {
 
 // Не используйте такой код в продакшене
 // ошибка должна всегда явно обрабатываться
-func __err_panic(err error) {
+func panicOnErr(err error) {
 	if err != nil {
 		panic(err)
 	}

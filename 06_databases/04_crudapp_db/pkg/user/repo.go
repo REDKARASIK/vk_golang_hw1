@@ -19,8 +19,8 @@ func NewMemoryRepo() *UserMemoryRepo {
 }
 
 var (
-	ErrNoUser  = errors.New("No user found")
-	ErrBadPass = errors.New("Invald password")
+	ErrNoUser  = errors.New("User not found")
+	ErrBadPass = errors.New("Invalid password")
 )
 
 func (repo *UserMemoryRepo) Authorize(login, pass string) (*User, error) {
