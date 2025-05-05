@@ -1,4 +1,4 @@
-FROM golang:1.16-alpine
+FROM golang:1.24-alpine
 
 COPY ./my_super_app /go/src/my_super_app
 

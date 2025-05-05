@@ -1,0 +1,25 @@
+name: my_super_app
+
+services:
+  my_super_app:
+    # image: my_super_app:latest
+    build:
+      context: .
+      dockerfile: ./1_Dockerfile.Multistage
+    container_name: my_super_app
+    restart: unless-stopped
+  nginx:
+    image: nginx:1.27.4
+    links:
+      - my_super_app:my_super_app
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - 8000:8000
+    restart: unless-stopped
+    depends_on:
+      - my_super_app
+# docker compose -f 2_compose.yml up --build -d
+# docker compose -f 2_compose.yml stop
+# docker compose -f 2_compose.yml start
+# docker compose -f 2_compose.yml down

@@ -1,2 +1,8 @@
-https://stackoverflow.com/questions/29145370/how-can-i-initialize-a-mysql-database-with-schema-in-a-docker-container
-https://forums.docker.com/t/mysql-create-database-and-import-sql-file-with-dockerfile/30300
+- https://www.atlassian.com/continuous-delivery/principles/continuous-integration-vs-delivery-vs-deployment
+- https://about.gitlab.com/topics/ci-cd/
+- https://stackoverflow.com/questions/29145370/how-can-i-initialize-a-mysql-database-with-schema-in-a-docker-container
+- https://forums.docker.com/t/mysql-create-database-and-import-sql-file-with-dockerfile/30300
+- https://docs.gitlab.com/
+- https://docs.docker.com/manuals/
+- https://docs.docker.com/docker-hub/
+- https://nginx.org/ru/docs/
