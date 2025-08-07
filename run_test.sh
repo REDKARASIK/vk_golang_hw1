@@ -11,8 +11,14 @@ echo "Modified directories: $modified_directories"
 is_tests_failed=false
 
 for dir in $modified_directories; do
-      test_path="./${dir}/99_hw/..."
+    test_path="./${dir}/99_hw/..."
+
+    if [ ! -d "$test_path" ]; then
+      echo "No 99_hw dir in $dir"
+      continue
+    else
       echo "Running tests in: $test_path"
+    fi
 
     if [ "$dir" = "./04_net2/99_hw/..." ]; then
       go mod vendor
