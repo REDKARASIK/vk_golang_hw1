@@ -42,7 +42,7 @@ func adminAuthMiddleware(next http.Handler) http.Handler {
 		fmt.Println("adminAuthMiddleware", r.URL.Path)
 
 		_, err := r.Cookie("session_id")
-		// учебный пример! это не проверка авторизации!
+		// Учебный пример! это не проверка авторизации!
 		if err != nil {
 			fmt.Println("no auth at", r.URL.Path)
 			http.Redirect(w, r, "/", http.StatusFound)
@@ -80,7 +80,7 @@ func logoutPage(w http.ResponseWriter, r *http.Request) {
 
 func mainPage(w http.ResponseWriter, r *http.Request) {
 	session, err := r.Cookie("session_id")
-	// учебный пример! это не проверка авторизации!
+	// Учебный пример! это не проверка авторизации!
 	loggedIn := (err != http.ErrNoCookie)
 
 	if loggedIn {

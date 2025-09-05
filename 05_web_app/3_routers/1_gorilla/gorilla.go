@@ -8,53 +8,49 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func List(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "You see user list\n")
+// Подборка лучших роутеров для go:
+// https://github.com/avelino/awesome-go?tab=readme-ov-file#routers
+
+// curl -v -H "Content-Type: application/json" http://localhost:8080/
+func UserList(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "\n\tYou see user list\n\n")
 }
 
-func ListVK(w http.ResponseWriter, r *http.Request) {
+// curl -v -H "Content-Type: application/json" --resolve qq.vk.ru:8080:127.0.0.1 http://qq.vk.ru:8080/users
+func UserListVK(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	fmt.Fprintf(w, "You see user list for subdomain %s\n", vars["subdomain"])
+	fmt.Fprintf(w, "\n\tYou see user list for subdomain %q for host %q\n\n", vars["subdomain"], r.Host)
 }
 
-func Get(w http.ResponseWriter, r *http.Request) {
+// curl -v -X PUT -H "Content-Type: application/json" http://localhost:8080/users/rvasily
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	fmt.Fprintf(w, "you try to see user %s\n", vars["id"])
+	fmt.Fprintf(w, "\n\tYou try to update user %q\n\n", vars["login"])
 }
 
-/*
-curl -v -X PUT -H "Content-Type: application/json" -d '{"login":"rvasily"}' http://localhost:8080/users
-*/
-
-func Create(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "you try to create new user\n")
-}
-
-/*
-curl -v -X POST -H "Content-Type: application/json"  -H "X-Auth: test" -d '{"name":"Vasily Romanov"}' http://localhost:8080/users/rvasily
-*/
-
-func Update(w http.ResponseWriter, r *http.Request) {
+// curl -v -H "Content-Type: application/json" http://localhost:8080/users/100500
+func GetUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	fmt.Fprintf(w, "you try to update %s\n", vars["login"])
+	fmt.Fprintf(w, "\n\tYou try to see user with id=%q\n\n", vars["id"])
+}
+
+// curl -v -X POST -H "Content-Type: application/json" -H "X-Auth: test" http://localhost:8080/users/rvasily
+func CreateTestUser(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	fmt.Fprintf(w, "\n\tYou try to create new user %q\n\n", vars["login"])
 }
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/", List)
+	r.HandleFunc("/", UserList)
 
-	r.HandleFunc("/users", List).Host("localhost")
+	r.HandleFunc("/users", UserList).Host("localhost")
+	r.HandleFunc("/users", UserListVK).Host("{subdomain}.vk.ru")
 
-	r.HandleFunc("/users", ListVK).Host("{subdomain}.vk.ru")
-
-	r.HandleFunc("/users", Update).Methods("PUT")
-
-	/*
-	   See anything wrong?
-	*/
-	r.HandleFunc("/users/{login:[0-9a-z]+}", Update)
-	r.HandleFunc("/users/{id:[0-9]+}", Get)
-	r.HandleFunc("/users/{login}", Create).Methods("POST").Headers("X-Auth", "test")
+	// See anything wrong?:
+	r.HandleFunc("/users/{login:[0-9a-z]+}", UpdateUser)
+	r.HandleFunc("/users/{id:[0-9]+}", GetUser)
+	r.HandleFunc("/users/{login}", CreateTestUser).Methods("POST").Headers("X-Auth", "test")
 
 	fmt.Println("starting server at :8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
