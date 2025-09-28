@@ -1,5 +1,5 @@
 module myapp
 
-go 1.13
+go 1.25
 
 require github.com/rvasily/examplerepo v0.0.0-20170218071937-9b59d66a1aa9

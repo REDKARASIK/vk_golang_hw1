@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// сколько в среднем спим при эмуляции работы
+// Сколько в среднем спим при эмуляции работы
 const AvgSleep = 50
 
 type Timing struct {
@@ -23,15 +23,14 @@ type ctxTimings struct {
 	Data map[string]*Timing
 }
 
-// линтер ругается если используем базовые типы в Value контекста
-// типа так безопаснее разграничивать
+// Линтер ругается если используем базовые типы в Value контекста, поэтому заводим кастомный
 type key int
 
 const timingsKey key = 1
 
 func logContextTimings(ctx context.Context, path string, start time.Time) {
-	// получаем тайминги из контекста
-	// поскольку там пустой интерфейс, то нам надо преобразовать к нужному типу
+	// Получаем тайминги из контекста.
+	// Поскольку там пустой интерфейс, то нам надо преобразовать к нужному типу:
 	timings, ok := ctx.Value(timingsKey).(*ctxTimings)
 	if !ok {
 		return
@@ -71,8 +70,6 @@ func timingMiddleware(next http.Handler) http.Handler {
 }
 
 func trackContextTimings(ctx context.Context, metricName string, start time.Time) {
-	// получаем тайминги из контекста
-	// поскольку там пустой интерфейс, то нам надо преобразовать к нужному типу
 	timings, ok := ctx.Value(timingsKey).(*ctxTimings)
 	if !ok {
 		return
@@ -80,11 +77,11 @@ func trackContextTimings(ctx context.Context, metricName string, start time.Time
 
 	elapsedTime := time.Since(start)
 
-	// лочимся на случай конкурентной записи в мапку
+	// Лочимся на случай конкурентной записи в мапу:
 	timings.Lock()
 	defer timings.Unlock()
 
-	// если метрики ещё нет - мы её создадим, если есть - допишем в существующую
+	// Если метрики ещё нет - мы её создадим, если есть - допишем в существующую:
 	if metric, metricExists := timings.Data[metricName]; metricExists {
 		metric.Count++
 		metric.Duration += elapsedTime
@@ -110,7 +107,9 @@ func loadPostsHandle(w http.ResponseWriter, req *http.Request) {
 	emulateWork(ctx, "loadPosts")
 	emulateWork(ctx, "loadPosts")
 	emulateWork(ctx, "loadPosts")
-	time.Sleep(10 * time.Millisecond) // не отслеживаемая в таймингах трата времени
+
+	time.Sleep(10 * time.Millisecond) // Не отслеживаемая в таймингах трата времени
+
 	emulateWork(ctx, "loadSidebar")
 	emulateWork(ctx, "loadComments")
 
@@ -118,12 +117,10 @@ func loadPostsHandle(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	rand.Seed(time.Now().UTC().UnixNano())
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", loadPostsHandle)
 
-	siteMux := http.NewServeMux()
-	siteMux.HandleFunc("/", loadPostsHandle)
-
-	siteHandler := timingMiddleware(siteMux)
+	siteHandler := timingMiddleware(mux)
 
 	fmt.Println("starting server at :8080")
 	http.ListenAndServe(":8080", siteHandler)
