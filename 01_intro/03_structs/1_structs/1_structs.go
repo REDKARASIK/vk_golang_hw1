@@ -9,27 +9,27 @@ type Person struct {
 }
 
 type Account struct {
-	Id int
-	// Name    string
+	Id      int
 	Cleaner func(string) string
 	Owner   Person
 	Person
+	//Name    string
 }
 
 func main() {
-	// полное объявление структуры
+	// Полное объявление структуры
 	var acc Account = Account{
 		Id: 1,
-		// Name: "vasya",
 		Person: Person{
-			Name:    "Василий",
+			Name:    "Антон",
 			Address: "Москва",
 		},
+		//Name: "anton",
 	}
 	fmt.Printf("%#v\n", acc)
 
-	// короткое объявление структуры
-	acc.Owner = Person{2, "Romanov Vasily", "Moscow"}
+	// Короткое объявление структуры
+	acc.Owner = Person{2, "Chumakov Anton", "Moscow"}
 
 	fmt.Printf("%#v\n", acc)
 

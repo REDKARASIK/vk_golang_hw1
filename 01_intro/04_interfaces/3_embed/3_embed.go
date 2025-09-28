@@ -11,7 +11,7 @@ type Phone struct {
 
 func (p *Phone) Pay(amount int) error {
 	if p.Money < amount {
-		return fmt.Errorf("Not enough money on account")
+		return fmt.Errorf("not enough money on account")
 	}
 	p.Money -= amount
 	return nil
@@ -19,7 +19,7 @@ func (p *Phone) Pay(amount int) error {
 
 func (p *Phone) Ring(number string) error {
 	if number == "" {
-		return fmt.Errorf("PLease, enter phone")
+		return fmt.Errorf("please, enter phone")
 	}
 	return nil
 }

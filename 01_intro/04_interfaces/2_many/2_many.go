@@ -12,7 +12,7 @@ type Wallet struct {
 
 func (w *Wallet) Pay(amount int) error {
 	if w.Cash < amount {
-		return fmt.Errorf("Не хватает денег в кошельке")
+		return fmt.Errorf("не хватает денег в кошельке")
 	}
 	w.Cash -= amount
 	return nil
@@ -30,7 +30,7 @@ type Card struct {
 
 func (c *Card) Pay(amount int) error {
 	if c.Balance < amount {
-		return fmt.Errorf("Не хватает денег на карте")
+		return fmt.Errorf("не хватает денег на карте")
 	}
 	c.Balance -= amount
 	return nil
@@ -45,7 +45,7 @@ type ApplePay struct {
 
 func (a *ApplePay) Pay(amount int) error {
 	if a.Money < amount {
-		return fmt.Errorf("Не хватает денег на аккаунте")
+		return fmt.Errorf("не хватает денег на аккаунте")
 	}
 	a.Money -= amount
 	return nil

@@ -7,12 +7,12 @@ type Person struct {
 	Name string
 }
 
-// не изменит оригинальной структуры, для который вызван
+// Не изменит оригинальной структуры, для который вызван
 func (p Person) UpdateName(name string) {
 	p.Name = name
 }
 
-// изменяет оригинальную структуру
+// Изменяет оригинальную структуру
 func (p *Person) SetName(name string) {
 	p.Name = name
 }
@@ -23,6 +23,7 @@ type Account struct {
 	Person
 }
 
+// А если этого метода нет?
 func (p *Account) SetName(name string) {
 	p.Name = name
 }
@@ -38,13 +39,16 @@ func (sl *MySlice) Count() int {
 }
 
 func main() {
+	// Вариант 1 - Создать объект с заданными вручную полями
 	// pers := &Person{1, "Vasily"}
-	pers := new(Person)
-	pers.SetName("Vasily Romanov")
-	// (&pers).SetName("Vasily Romanov")
-	// fmt.Printf("updated person: %#v\n", pers)
 
-	var acc Account = Account{
+	// Вариант 2 - Создать пустой объект и задать поля через методы
+	pers := new(Person)
+	fmt.Printf("empty person: %#v\n", pers)
+	pers.SetName("Vasily Romanov")
+	fmt.Printf("updated person: %#v\n", pers)
+
+	acc := Account{
 		Id:   1,
 		Name: "vasya",
 		Person: Person{
@@ -56,7 +60,7 @@ func main() {
 	acc.SetName("romanov.vasily")
 	acc.Person.SetName("Test")
 
-	// fmt.Printf("%#v \n", acc)
+	fmt.Printf("%#v \n", acc)
 
 	sl := MySlice([]int{1, 2})
 	sl.Add(5)
