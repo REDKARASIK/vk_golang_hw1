@@ -3,33 +3,33 @@ package main
 import "fmt"
 
 func main() {
-	// инициализация при создании
+	// Инициализация при создании
 	var user map[string]string = map[string]string{
 		"name":     "Anton",
-		"lastName": "Sulaev",
+		"lastName": "Сhumakov",
 	}
 
-	// сразу с нужной ёмкостью
+	// Создание сразу с нужной ёмкостью
 	profile := make(map[string]string, 10)
 
-	// количество элементов
+	// Количество элементов
 	mapLength := len(user)
 
 	fmt.Printf("%d %+v\n", mapLength, profile)
 
-	// если ключа нет - вернёт значение по умолчанию для типа
+	// Если ключа нет - вернёт значение по умолчанию для типа
 	mName := user["middleName"]
 	fmt.Println("mName:", mName)
 
-	// проверка на существование ключа
+	// Проверка на существование ключа
 	mName, mNameExist := user["middleName"]
 	fmt.Println("mName:", mName, "mNameExist:", mNameExist)
 
-	// пустая переменная - только проверяем что ключ есть
+	// Пустая переменная - только проверяем что ключ есть
 	_, mNameExist2 := user["middleName"]
 	fmt.Println("mNameExist2", mNameExist2)
 
-	// удаление ключа
+	// Удаление ключа
 	delete(user, "lastName")
 	fmt.Printf("%#v\n", user)
 }

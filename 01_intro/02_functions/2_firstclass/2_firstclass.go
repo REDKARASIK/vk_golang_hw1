@@ -2,18 +2,18 @@ package main
 
 import "fmt"
 
-// обычная функция
+// Обычная функция
 func doNothing() {
 	fmt.Println("i'm regular function")
 }
 
 func main() {
-	// анонимная функция
+	// Анонимная функция
 	func(in string) {
 		fmt.Println("anon func out:", in)
 	}("nobody")
 
-	// присванивание анонимной функции в переменную
+	// Присванивание анонимной функции в переменную
 	printer := func(in string) {
 		fmt.Println("printer outs:", in)
 	}
@@ -22,13 +22,13 @@ func main() {
 	// определяем тип функции
 	type strFuncType func(string)
 
-	// функция принимает коллбек
+	// функция принимает коллбек (другую функцию)
 	worker := func(callback strFuncType) {
 		callback("as callback")
 	}
 	worker(printer)
 
-	// функиция возвращает замыкание
+	// Функция возвращает замыкание
 	prefixer := func(prefix string) strFuncType {
 		return func(in string) {
 			fmt.Printf("[%s] %s\n", prefix, in)

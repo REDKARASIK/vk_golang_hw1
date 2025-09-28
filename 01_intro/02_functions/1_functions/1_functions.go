@@ -2,23 +2,30 @@ package main
 
 import "fmt"
 
-// обычное объявление
+// Обычное объявление
 func singleIn(in int) int {
 	return in
 }
 
-// много параметров
+// Множество параметров
 func multIn(a, b int, c int) int {
 	return a + b + c
 }
 
-// именованный результат
+// Без результата
+func withoutReturn(s string) {
+	for _, sym := range s {
+		fmt.Print(sym)
+	}
+}
+
+// Именованный результат
 func namedReturn() (out int) {
 	out = 2
 	return
 }
 
-// несколько результатов
+// Несколько результатов
 func multipleReturn(in int) (int, error) {
 	if in > 2 {
 		return 0, fmt.Errorf("some error happend")
@@ -26,20 +33,19 @@ func multipleReturn(in int) (int, error) {
 	return in, nil
 }
 
-// несколько именованных результатов
+// Несколько именованных результатов
 func multipleNamedReturn(ok bool) (rez int, err error) {
 	rez = 1
 	if ok {
 		err = fmt.Errorf("some error happend")
-		// аналогично return rez, err
-		return 3, fmt.Errorf("some error happend")
+		// Аналогично return rez, err
 		return
 	}
 	rez = 2
 	return
 }
 
-// не фиксированное количество параметров
+// Нефиксированное количество параметров
 func sum(in ...int) (result int) {
 	fmt.Printf("in := %#v \n", in)
 	for _, val := range in {
@@ -49,9 +55,6 @@ func sum(in ...int) (result int) {
 }
 
 func main() {
-	// fmt.Println(multipleNamedReturn(false))
-	// return
-
 	nums := []int{1, 2, 3, 4}
 	fmt.Println(nums, sum(nums...))
 	return
