@@ -3,24 +3,26 @@ package main
 import "fmt"
 
 func main() {
-	// простое условие
+	// Простое условие
 	boolVal := true
 	if boolVal {
 		fmt.Println("boolVal is true")
 	}
 
 	mapVal := map[string]string{"name": "vasya"}
-	// условие с блоком инициализации
+
+	// Условие с блоком инициализации
 	if keyValue, keyExist := mapVal["name"]; keyExist {
 		fmt.Println("name =", keyValue)
 	}
-	// получаем только признак сущестования ключа
+
+	// Получаем только признак существования ключа
 	if _, keyExist := mapVal["name"]; keyExist {
 		fmt.Println("key 'name' exist")
 	}
 
 	cond := 1
-	// множественные if else
+	// Множественные if else
 	if cond == 1 {
 		fmt.Println("cond is 1")
 	} else if cond == 2 {
@@ -47,7 +49,7 @@ func main() {
 		fmt.Println("second block")
 	}
 
-	// выход из цикла, находясь внутри switch
+	// Выход из цикла, находясь внутри switch
 Loop:
 	for key, val := range mapVal {
 		println("switch in loop", key, val)

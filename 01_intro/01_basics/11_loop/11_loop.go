@@ -3,20 +3,20 @@ package main
 import "fmt"
 
 func main() {
-	// цикл без условия, while(true) OR for(;;;)
+	// Цикл без условия, while(true) OR for(;;;)
 	for {
 		fmt.Println("loop iteration")
 		break
 	}
 
-	// цикл без условия, while(isRun)
+	// Цикл без условия, while(isRun)
 	isRun := true
 	for isRun {
 		fmt.Println("loop iteration with condition")
 		isRun = false
 	}
 
-	// цикл с условие и блоком инициализации
+	// Цикл с условием и блоком инициализации
 	for i := 0; i < 2; i++ {
 		fmt.Println("loop iteration", i)
 		if i == 1 {
@@ -24,7 +24,7 @@ func main() {
 		}
 	}
 
-	// операции по slice
+	// Операции по slice
 	sl := []int{1, 2, 3}
 	idx := 0
 
@@ -43,7 +43,7 @@ func main() {
 		fmt.Println("range slice by idx-value", idx, val)
 	}
 
-	// операции по map
+	// Операции по map
 	profile := map[int]string{1: "Vasily", 2: "Romanov"}
 
 	for key := range profile {
@@ -58,14 +58,13 @@ func main() {
 		fmt.Println("range map by val", val)
 	}
 
-	// added in go 1.22
-	// for i := range 10 {
-	// 	println(i)
-	// }
+	// Добавлено в Go 1.22
+	for i := range 10 {
+		println(i)
+	}
 
 	str := "Привет, Мир!"
 	for pos, char := range str {
 		fmt.Printf("%#U at pos %d\n", char, pos)
 	}
-
 }

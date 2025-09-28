@@ -19,7 +19,7 @@ func uniq(input io.Reader, output io.Writer) error {
 			return fmt.Errorf("file not sorted")
 		}
 		prev = txt
-		fmt.Fprintln(output, txt)
+		_, _ = fmt.Fprintln(output, txt)
 	}
 	return nil
 }

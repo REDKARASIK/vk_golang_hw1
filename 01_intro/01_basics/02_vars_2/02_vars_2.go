@@ -6,13 +6,13 @@ func main() {
 	// int - платформозависимый тип, 32/64
 	var i int = 10
 
-	// автоматически выбранный int
+	// Автоматически выбранный int
 	var autoInt = -10
 
 	// int8, int16, int32, int64
 	var bigInt int64 = 1<<32 - 1
 
-	// платформозависимый тип, 32/64
+	// Платформозависимый тип, 32/64
 	var unsignedInt uint = 123
 
 	// uint8, unit16, uint32, unit64
