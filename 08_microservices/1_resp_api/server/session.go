@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"sync"
 )
@@ -14,13 +15,7 @@ type SessionID struct {
 	ID string
 }
 
-const sessKeyLen = 10
-
-type SessionManagerInterface interface {
-	Create(in *Session) (*SessionID, error)
-	Check(in *SessionID) *Session
-	Delete(in *SessionID)
-}
+const sessionKeyLen = 10
 
 type SessionManager struct {
 	sessions map[SessionID]*Session
@@ -29,37 +24,49 @@ type SessionManager struct {
 
 func NewSessionManager() *SessionManager {
 	return &SessionManager{
-		mu:       sync.RWMutex{},
 		sessions: map[SessionID]*Session{},
+		mu:       sync.RWMutex{},
 	}
 }
 
-func (sm *SessionManager) Create(in *Session) (*SessionID, error) {
+func (sm *SessionManager) Create(in *Session, out *SessionID) error {
+	fmt.Printf("call Create, input=%#v\n", in)
+
+	id := &SessionID{generateRandomString(sessionKeyLen)}
 	sm.mu.Lock()
-	id := SessionID{RandStringRunes(sessKeyLen)}
+	sm.sessions[*id] = in
 	sm.mu.Unlock()
-	sm.sessions[id] = in
-	return &id, nil
-}
+	*out = *id
 
-func (sm *SessionManager) Check(in *SessionID) *Session {
-	sm.mu.RLock()
-	defer sm.mu.RUnlock()
-	if sess, ok := sm.sessions[*in]; ok {
-		return sess
-	}
 	return nil
 }
 
-func (sm *SessionManager) Delete(in *SessionID) {
+func (sm *SessionManager) Check(in *SessionID, out *Session) error {
+	fmt.Printf("call Check, input=%#v\n", in)
+
+	sm.mu.RLock()
+	defer sm.mu.RUnlock()
+	if sess, ok := sm.sessions[*in]; ok {
+		*out = *sess
+	}
+
+	return nil
+}
+
+func (sm *SessionManager) Delete(in *SessionID, out *int) error {
+	fmt.Printf("call Delete, input=%#v\n", in)
+
 	sm.mu.Lock()
 	defer sm.mu.Unlock()
 	delete(sm.sessions, *in)
+	*out = 1
+
+	return nil
 }
 
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-func RandStringRunes(n int) string {
+func generateRandomString(n int) string {
 	b := make([]rune, n)
 	for i := range b {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]

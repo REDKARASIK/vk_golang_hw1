@@ -39,14 +39,14 @@ func wait(amount int) {
 
 // утилитарная функция для коннекта к серверу
 func getGrpcConn(t *testing.T) *grpc.ClientConn {
-	grpcConn, err := grpc.Dial(
+	grpcClient, err := grpc.NewClient(
 		listenAddr,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
 		t.Fatalf("cant connect to grpc: %v", err)
 	}
-	return grpcConn
+	return grpcClient
 }
 
 // получаем контекст с нужными метаданными для ACL
@@ -231,7 +231,7 @@ func TestLogging(t *testing.T) {
 				return
 			}
 			// это грязный хак
-			// protobuf добавляет к структуре свои поля, которвые не видны при приведении к строке и при reflect.DeepEqual
+			// protobuf добавляет к структуре свои поля, которые не видны при приведении к строке и при reflect.DeepEqual
 			// поэтому берем не оригинал сообщения, а только нужные значения
 			logData1 = append(logData1, &Event{Consumer: evt.Consumer, Method: evt.Method})
 		}
@@ -250,7 +250,7 @@ func TestLogging(t *testing.T) {
 				return
 			}
 			// это грязный хак
-			// protobuf добавляет к структуре свои поля, которвые не видны при приведении к строке и при reflect.DeepEqual
+			// protobuf добавляет к структуре свои поля, которые не видны при приведении к строке и при reflect.DeepEqual
 			// поэтому берем не оригинал сообщения, а только нужные значения
 			logData2 = append(logData2, &Event{Consumer: evt.Consumer, Method: evt.Method})
 		}
@@ -342,7 +342,7 @@ func TestStat(t *testing.T) {
 			// log.Println("stat1", stat, errTmp)
 			mu.Lock()
 			// это грязный хак
-			// protobuf добавляет к структуре свои поля, которвые не видны при приведении к строке и при reflect.DeepEqual
+			// protobuf добавляет к структуре свои поля, которые не видны при приведении к строке и при reflect.DeepEqual
 			// поэтому берем не оригинал сообщения, а только нужные значения
 			stat1 = &Stat{
 				ByMethod:   stat.ByMethod,
@@ -363,7 +363,7 @@ func TestStat(t *testing.T) {
 			// log.Println("stat2", stat, errTmp)
 			mu.Lock()
 			// это грязный хак
-			// protobuf добавляет к структуре свои поля, которвые не видны при приведении к строке и при reflect.DeepEqual
+			// protobuf добавляет к структуре свои поля, которые не видны при приведении к строке и при reflect.DeepEqual
 			// поэтому берем не оригинал сообщения, а только нужные значения
 			stat2 = &Stat{
 				ByMethod:   stat.ByMethod,
