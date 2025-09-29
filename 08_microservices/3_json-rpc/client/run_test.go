@@ -1,12 +1,19 @@
 package main
 
 import (
+	"context"
 	"testing"
 )
 
-func TestExample(t *testing.T) {
+func TestRun(t *testing.T) {
+
+	sessionManager = NewSessionManager()
+
+	ctx := context.Background()
+
 	// создаем сессию
-	sessId, err := AuthCreateSession(
+	sessId, err := sessionManager.Create(
+		ctx,
 		&Session{
 			Login:     "anton",
 			UserAgent: "safari",
@@ -14,20 +21,23 @@ func TestExample(t *testing.T) {
 	t.Log("sessId", sessId, err)
 
 	// проверяем сессию
-	sess := AuthCheckSession(
+	sess := sessionManager.Check(
+		ctx,
 		&SessionID{
 			ID: sessId.ID,
 		})
 	t.Log("sess", sess)
 
 	// удаляем сессию
-	AuthDeleteSession(
+	sessionManager.Delete(
+		ctx,
 		&SessionID{
 			ID: sessId.ID,
 		})
 
 	// проверяем еще раз
-	sess = AuthCheckSession(
+	sess = sessionManager.Check(
+		ctx,
 		&SessionID{
 			ID: sessId.ID,
 		})
