@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: godeploy
+  labels:
+    app: godeploy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: godeploy
+  template:
+    metadata:
+      labels:
+        app: godeploy
+    spec:
+      containers:
+        - name: godeploy
+          image: dmitrydorofeev/godeploy:cf340e3e
+          ports:
+            - containerPort: 8080

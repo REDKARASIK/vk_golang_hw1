@@ -1,0 +1,14 @@
+FROM golang:1.24-alpine
+
+COPY ./my_super_app /go/src/my_super_app
+
+WORKDIR /go/src/my_super_app
+
+RUN go install .
+
+CMD [ "my_super_app" ]
+
+# docker build --file=0_Dockerfile --tag=my_super_app:latest .
+# docker run -d --rm -p 8080:8080 my_super_app
+# docker ps
+# docker logs ...
