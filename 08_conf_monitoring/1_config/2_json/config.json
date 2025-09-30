@@ -1,0 +1,12 @@
+{
+	"comments": true,
+	"servers": [
+		"127.0.0.1:8081",
+		"127.0.0.1:8082"
+	],
+	"type": "staging",
+	"tmp": {
+		"abc": 123,
+		"flags": 434
+	}
+}

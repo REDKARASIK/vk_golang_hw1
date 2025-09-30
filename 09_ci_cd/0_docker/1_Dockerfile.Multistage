@@ -1,0 +1,21 @@
+# 1 шаг
+FROM golang:1.24-alpine AS builder
+
+COPY ./my_super_app /go/src/my_super_app
+
+WORKDIR /go/src/my_super_app
+
+RUN go install .
+
+
+# 2 шаг
+FROM scratch
+
+WORKDIR /app_binary
+
+COPY --from=builder /go/bin/my_super_app /app_binary/
+
+CMD ["./my_super_app"]
+
+# docker build --file=1_Dockerfile.Multistage --tag=my_super_app-multistage:latest .
+# docker run --rm -p 8080:8080 my_super_app-multistage
