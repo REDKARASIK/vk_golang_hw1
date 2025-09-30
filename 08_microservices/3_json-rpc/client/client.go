@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 )
 
-var loginFormTmpl = []byte(`
+var (
+	loginFormTmpl = []byte(`
 <html>
 	<body>
 	<form action="/login" method="post">
@@ -18,6 +20,9 @@ var loginFormTmpl = []byte(`
 </html>
 `)
 
+	sessionManager SessionManagerI
+)
+
 func checkSession(r *http.Request) (*Session, error) {
 	cookieSessionID, err := r.Cookie("session_id")
 	if err == http.ErrNoCookie {
@@ -26,7 +31,7 @@ func checkSession(r *http.Request) (*Session, error) {
 		return nil, err
 	}
 
-	sess := AuthCheckSession(&SessionID{
+	sess := sessionManager.Check(r.Context(), &SessionID{
 		ID: cookieSessionID.Value,
 	})
 	return sess, nil
@@ -53,12 +58,16 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 	inputLogin := r.FormValue("login")
 	expiration := time.Now().Add(365 * 24 * time.Hour)
 
-	sess, err := AuthCreateSession(&Session{
+	sess, err := sessionManager.Create(r.Context(), &Session{
 		Login:     inputLogin,
 		UserAgent: r.UserAgent(),
 	})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	if sess == nil {
+		w.Write(loginFormTmpl)
 		return
 	}
 
@@ -81,7 +90,7 @@ func logoutPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	AuthDeleteSession(&SessionID{
+	sessionManager.Delete(r.Context(), &SessionID{
 		ID: cookieSessionID.Value,
 	})
 
@@ -91,11 +100,27 @@ func logoutPage(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
+func accessLogMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("accessLogMiddleware", r.URL.Path)
+		start := time.Now()
+
+		next.ServeHTTP(w, r)
+
+		tm := time.Now().Format(time.RFC3339)
+		fmt.Printf("%s [%s: %s] req_time=%s\n\n", tm, r.Method, r.URL.Path, time.Since(start))
+	})
+}
+
 func main() {
-	http.HandleFunc("/", innerPage)
-	http.HandleFunc("/login", loginPage)
-	http.HandleFunc("/logout", logoutPage)
+	sessionManager = NewSessionManager()
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", innerPage)
+	mux.HandleFunc("/login", loginPage)
+	mux.HandleFunc("/logout", logoutPage)
+	muxWithMiddleware := accessLogMiddleware(mux)
 
 	fmt.Println("starting server at :8080")
-	http.ListenAndServe(":8080", nil)
+	log.Fatal(http.ListenAndServe(":8080", muxWithMiddleware))
 }
