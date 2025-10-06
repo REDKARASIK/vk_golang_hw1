@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/tap"
 
-	"gitlab.vk-golang.ru/vk-golang/lectures/08_microservices/5_grpc/session"
+	"gitlab.vk-golang.ru/vk-golang/lectures/07_microservices/5_grpc/session"
 )
 
 // request -> {InTapHandle} | parsing | -> {Interceptor} | handling | ...
