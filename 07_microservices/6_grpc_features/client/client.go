@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
 
-	"gitlab.vk-golang.ru/vk-golang/lectures/08_microservices/5_grpc/session"
+	"gitlab.vk-golang.ru/vk-golang/lectures/07_microservices/5_grpc/session"
 )
 
 // {Interceptor} | serialization | -> request

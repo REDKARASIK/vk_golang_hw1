@@ -10,7 +10,7 @@ import (
 	"github.com/uber/jaeger-client-go"
 	jaegercfg "github.com/uber/jaeger-client-go/config"
 	jaegerlog "github.com/uber/jaeger-client-go/log"
-	"gitlab.vk-golang.ru/vk-golang/lectures/09_conf_monitoring/3_tracing/jaeger_grpc/session"
+	"gitlab.vk-golang.ru/vk-golang/lectures/08_conf_monitoring/3_tracing/jaeger_grpc/session"
 
 	"github.com/uber/jaeger-lib/metrics"
 

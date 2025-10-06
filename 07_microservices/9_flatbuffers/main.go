@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	flatbuffers "github.com/google/flatbuffers/go"
-	"gitlab.vk-golang.ru/vk-golang/lectures/08_microservices/9_flatbuffers/session"
+	"gitlab.vk-golang.ru/vk-golang/lectures/07_microservices/9_flatbuffers/session"
 )
 
 // flatc --go *.fbs
