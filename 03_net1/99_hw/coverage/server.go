@@ -1,3 +1,7 @@
 package main
 
-// тут писать SearchServer
+import "net/http"
+
+func SearchServer(w http.ResponseWriter, r *http.Request) {
+	// Тут писать SearchServer
+}
