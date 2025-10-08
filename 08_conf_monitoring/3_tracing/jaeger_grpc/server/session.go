@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"sync"
 
-	"gitlab.vk-golang.ru/vk-golang/lectures/09_conf_monitoring/3_tracing/jaeger_grpc/session"
+	"gitlab.vk-golang.ru/vk-golang/lectures/08_conf_monitoring/3_tracing/jaeger_grpc/session"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"

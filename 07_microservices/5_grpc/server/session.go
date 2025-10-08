@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"gitlab.vk-golang.ru/vk-golang/lectures/08_microservices/5_grpc/session"
+	"gitlab.vk-golang.ru/vk-golang/lectures/07_microservices/5_grpc/session"
 )
 
 const sessKeyLen = 10
