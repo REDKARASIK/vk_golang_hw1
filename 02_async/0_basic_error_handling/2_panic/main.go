@@ -4,12 +4,11 @@ import (
 	"fmt"
 )
 
-var idToUsername  = map[int]string{
+var idToUsername = map[int]string{
 	0: "kuchin",
 	1: "sulaev",
 	2: "altunin",
 }
-
 
 func main() {
 	var id int
