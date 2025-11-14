@@ -1,5 +1,4 @@
-// тут лежит тестовый код
-// менять в нём вам может потребоваться только коннект к базе
+// Тут менять вам может потребоваться только коннект к базе
 package main
 
 import (
@@ -13,10 +12,9 @@ import (
 
 var (
 	// DSN это соединение с базой
-	// вы можете изменить его на то, которое вам нужно
+	// Вы можете изменить его на то, которое вам нужно
 	// docker run -p 3306:3306 -v $(PWD):/docker-entrypoint-initdb.d -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_DATABASE=golang -d mysql
-	DSN = "root@tcp(localhost:3306)/golang2017?charset=utf8"
-	// DSN = "coursera:5QPbAUufx7@tcp(localhost:3306)/coursera?charset=utf8"
+	DSN = "root:1234@tcp(localhost:3306)/golang?charset=utf8"
 )
 
 func main() {
@@ -24,7 +22,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = db.Ping() // вот тут будет первое подключение к базе
+	err = db.Ping() // Тут будет первое подключение к базе
 	if err != nil {
 		panic(err)
 	}
