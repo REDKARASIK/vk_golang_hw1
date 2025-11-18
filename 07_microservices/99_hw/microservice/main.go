@@ -1,5 +1,5 @@
 package main
 
 func main() {
-	println("usage: go test -v")
+	println("usage: go test -v -race")
 }
