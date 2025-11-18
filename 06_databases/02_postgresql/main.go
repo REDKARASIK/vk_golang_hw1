@@ -9,7 +9,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
 type Item struct {
@@ -62,19 +62,15 @@ func (h *Handler) AddForm(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
 	// В целях упрощения примера пропущена валидация
-	result, err := h.DB.Exec(
-		"INSERT INTO items (`title`, `description`) VALUES (?, ?)",
+	var insertedID int
+	err := h.DB.QueryRow(
+		"INSERT INTO items (title, description) VALUES ($1, $2) RETURNING id",
 		r.FormValue("title"),
 		r.FormValue("description"),
-	)
+	).Scan(&insertedID)
 	panicOnErr(err)
 
-	affected, err := result.RowsAffected()
-	panicOnErr(err)
-	lastID, err := result.LastInsertId()
-	panicOnErr(err)
-
-	fmt.Println("Insert - RowsAffected", affected, "LastInsertId: ", lastID)
+	fmt.Println("Insert - InsertedId: ", insertedID)
 
 	http.Redirect(w, r, "/", http.StatusFound)
 }
@@ -85,7 +81,7 @@ func (h *Handler) Edit(w http.ResponseWriter, r *http.Request) {
 	panicOnErr(err)
 
 	post := &Item{}
-	row := h.DB.QueryRow("SELECT id, title, updated, description FROM items WHERE id = ?", id)
+	row := h.DB.QueryRow("SELECT id, title, updated, description FROM items WHERE id = $1", id)
 
 	// Scan сам закрывает коннект
 	err = row.Scan(&post.Id, &post.Title, &post.Updated, &post.Description)
@@ -105,7 +101,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 
 	// В целях упрощения примера пропущена валидация
 	result, err := h.DB.Exec(
-		"UPDATE items SET `title` = ?, `description` = ?, `updated` = ? WHERE id = ?",
+		"UPDATE items SET title = $1, description = $2, updated = $3 WHERE id = $4",
 		r.FormValue("title"), r.FormValue("description"), "user", id,
 	)
 	panicOnErr(err)
@@ -124,7 +120,7 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	panicOnErr(err)
 
 	result, err := h.DB.Exec(
-		"DELETE FROM items WHERE id = ?",
+		"DELETE FROM items WHERE id = $1",
 		id,
 	)
 	panicOnErr(err)
@@ -142,14 +138,11 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 func main() {
 
 	// Основные настройки подключения к базе
-	dsn := "root:love@tcp(localhost:3306)/golang?"
-	// Указываем кодировку
-	dsn += "&charset=utf8"
-	// Отказываемся от prepared statements
-	// Параметры подставляются сразу
-	dsn += "&interpolateParams=true"
+	dsn := "postgres://postgres_user:postgres_password@localhost:5432/golang?"
+	// Отключаем использование SSL
+	dsn += "sslmode=disable"
 
-	db, err := sql.Open("mysql", dsn)
+	db, err := sql.Open("pgx", dsn)
 	panicOnErr(err)
 
 	db.SetMaxOpenConns(10)

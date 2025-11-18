@@ -2,9 +2,9 @@
 package main
 
 import (
-	context "context"
+	"context"
 
-	grpc "google.golang.org/grpc"
+	"google.golang.org/grpc"
 )
 
 type AdminClient interface {

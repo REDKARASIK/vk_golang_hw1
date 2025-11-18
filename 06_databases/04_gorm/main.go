@@ -1,45 +1,46 @@
 package main
 
 import (
-	"database/sql"
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 type Item struct {
-	Id          int
+	Id          int `sql:"AUTO_INCREMENT" gorm:"primary_key"`
 	Title       string
 	Description string
-	Updated     sql.NullString
+	Updated     string `sql:"null"`
 }
 
+func (i *Item) TableName() string {
+	return "items"
+}
+
+func (i *Item) BeforeSave() (err error) {
+	fmt.Println("trigger on before save")
+	return
+}
+
+// See also https://github.com/doug-martin/goqu
 type Handler struct {
-	DB   *sql.DB
+	DB   *gorm.DB
 	Tmpl *template.Template
 }
 
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
-
 	items := []*Item{}
-	// Не надо так: SELECT * FROM items
-	rows, err := h.DB.QueryContext(r.Context(), "SELECT id, title, updated FROM items")
+
+	db := h.DB.Find(&items)
+	err := db.Error
 	panicOnErr(err)
-
-	// Надо закрывать соединение, иначе будет течь
-	defer rows.Close()
-
-	for rows.Next() {
-		post := &Item{}
-		err = rows.Scan(&post.Id, &post.Title, &post.Updated)
-		panicOnErr(err)
-		items = append(items, post)
-	}
 
 	err = h.Tmpl.ExecuteTemplate(w, "index.html", struct {
 		Items []*Item
@@ -61,20 +62,16 @@ func (h *Handler) AddForm(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
-	// В целях упрощения примера пропущена валидация
-	result, err := h.DB.Exec(
-		"INSERT INTO items (`title`, `description`) VALUES (?, ?)",
-		r.FormValue("title"),
-		r.FormValue("description"),
-	)
+	newItem := &Item{
+		Title:       r.FormValue("title"),
+		Description: r.FormValue("description"),
+	}
+	db := h.DB.Create(&newItem)
+	err := db.Error
 	panicOnErr(err)
+	affected := db.RowsAffected
 
-	affected, err := result.RowsAffected()
-	panicOnErr(err)
-	lastID, err := result.LastInsertId()
-	panicOnErr(err)
-
-	fmt.Println("Insert - RowsAffected", affected, "LastInsertId: ", lastID)
+	fmt.Println("Insert - RowsAffected", affected, "LastInsertId: ", newItem.Id)
 
 	http.Redirect(w, r, "/", http.StatusFound)
 }
@@ -84,12 +81,17 @@ func (h *Handler) Edit(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(vars["id"])
 	panicOnErr(err)
 
-	post := &Item{}
-	row := h.DB.QueryRow("SELECT id, title, updated, description FROM items WHERE id = ?", id)
+	post := &Item{
+		Id: id,
+	}
 
-	// Scan сам закрывает коннект
-	err = row.Scan(&post.Id, &post.Title, &post.Updated, &post.Description)
-	panicOnErr(err)
+	db := h.DB.Find(post)
+	err = db.Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		fmt.Println("Record not found", id)
+	} else {
+		panicOnErr(err)
+	}
 
 	err = h.Tmpl.ExecuteTemplate(w, "edit.html", post)
 	if err != nil {
@@ -103,15 +105,17 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(vars["id"])
 	panicOnErr(err)
 
-	// В целях упрощения примера пропущена валидация
-	result, err := h.DB.Exec(
-		"UPDATE items SET `title` = ?, `description` = ?, `updated` = ? WHERE id = ?",
-		r.FormValue("title"), r.FormValue("description"), "user", id,
-	)
-	panicOnErr(err)
+	post := &Item{}
+	h.DB.Find(post, id)
 
-	affected, err := result.RowsAffected()
+	post.Title = r.FormValue("title")
+	post.Description = r.FormValue("description")
+	post.Updated = "rvasily"
+
+	db := h.DB.Save(post)
+	err = db.Error
 	panicOnErr(err)
+	affected := db.RowsAffected
 
 	fmt.Println("Update - RowsAffected", affected)
 
@@ -123,14 +127,10 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(vars["id"])
 	panicOnErr(err)
 
-	result, err := h.DB.Exec(
-		"DELETE FROM items WHERE id = ?",
-		id,
-	)
+	db := h.DB.Delete(&Item{Id: id})
+	err = db.Error
 	panicOnErr(err)
-
-	affected, err := result.RowsAffected()
-	panicOnErr(err)
+	affected := db.RowsAffected
 
 	fmt.Println("Delete - RowsAffected", affected)
 
@@ -149,15 +149,11 @@ func main() {
 	// Параметры подставляются сразу
 	dsn += "&interpolateParams=true"
 
-	db, err := sql.Open("mysql", dsn)
+	db, err := gorm.Open("mysql", dsn)
 	panicOnErr(err)
 
-	db.SetMaxOpenConns(10)
-
-	err = db.Ping() // Тут будет первое подключение к базе
-	if err != nil {
-		panic(err)
-	}
+	err = db.DB().Ping()
+	panicOnErr(err)
 
 	handlers := &Handler{
 		DB:   db,
@@ -179,7 +175,7 @@ func main() {
 }
 
 // Не используйте такой код в продакшене
-// Ошибка должна всегда явно обрабатываться
+// ошибка должна всегда явно обрабатываться
 func panicOnErr(err error) {
 	if err != nil {
 		panic(err)

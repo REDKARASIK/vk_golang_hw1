@@ -20,10 +20,10 @@ import (
 )
 
 const (
-	// какой адрес-порт слушать серверу
+	// Какой адрес-порт слушать серверу
 	listenAddr string = "127.0.0.1:8082"
 
-	// кого по каким методам пускать
+	// Кого по каким методам пускать
 	ACLData string = `{
 	"logger":    ["/main.Admin/Logging"],
 	"stat":      ["/main.Admin/Statistics"],
@@ -32,12 +32,12 @@ const (
 }`
 )
 
-// чтобы не было сюрпризов когда где-то не успела переключиться горутина и не успело что-то стартовать
+// Чтобы не было сюрпризов когда где-то не успела переключиться горутина и не успело что-то стартовать
 func wait(amount int) {
 	time.Sleep(time.Duration(amount) * 10 * time.Millisecond)
 }
 
-// утилитарная функция для коннекта к серверу
+// Утилитарная функция для коннекта к серверу
 func getGrpcConn(t *testing.T) *grpc.ClientConn {
 	grpcClient, err := grpc.NewClient(
 		listenAddr,
@@ -49,7 +49,7 @@ func getGrpcConn(t *testing.T) *grpc.ClientConn {
 	return grpcClient
 }
 
-// получаем контекст с нужными метаданными для ACL
+// Получаем контекст с нужными метаданными для ACL
 func getConsumerCtx(consumerName string) context.Context {
 	// ctx, _ := context.WithTimeout(context.Background(), time.Second)
 	ctx := context.Background()
@@ -59,7 +59,7 @@ func getConsumerCtx(consumerName string) context.Context {
 	return metadata.NewOutgoingContext(ctx, md)
 }
 
-// старт-стоп сервера
+// Старт-стоп сервера
 func TestServerStartStop(t *testing.T) {
 	ctx, finish := context.WithCancel(context.Background())
 	err := StartMyMicroservice(ctx, listenAddr, ACLData)
@@ -67,10 +67,10 @@ func TestServerStartStop(t *testing.T) {
 		t.Fatalf("cant start server initial: %v", err)
 	}
 	wait(1)
-	finish() // при вызове этой функции ваш сервер должен остановиться и освободить порт
+	finish() // При вызове этой функции ваш сервер должен остановиться и освободить порт
 	wait(1)
 
-	// теперь проверим что вы освободили порт и мы можем стартовать сервер ещё раз
+	// Теперь проверим, что вы освободили порт и мы можем стартовать сервер ещё раз
 	ctx, finish = context.WithCancel(context.Background())
 	err = StartMyMicroservice(ctx, listenAddr, ACLData)
 	if err != nil {
@@ -81,9 +81,9 @@ func TestServerStartStop(t *testing.T) {
 	wait(1)
 }
 
-// у вас наверняка будет что-то выполняться в отдельных горутинах
-// этим тестом мы проверяем что вы останавливаете все горутины которые у вас были и нет утечек
-// некоторый запас ( goroutinesPerTwoIterations*5 ) остаётся на случай рантайм горутин
+// У вас наверняка будет что-то выполняться в отдельных горутинах.
+// Этим тестом мы проверяем, что вы останавливаете все горутины, которые у вас были, и нет утечек.
+// Некоторый запас (goroutinesPerTwoIterations*5) остаётся на случай рантайм горутин
 func TestServerLeak(t *testing.T) {
 	// return
 	goroutinesStart := runtime.NumGoroutine()
@@ -132,9 +132,9 @@ func TestACL(t *testing.T) {
 	adm := NewAdminClient(conn)
 
 	for idx, ctx := range []context.Context{
-		context.Background(),       // нет поля для ACL
-		getConsumerCtx("unknown"),  // поле есть, неизвестный консюмер
-		getConsumerCtx("biz_user"), // поле есть, нет доступа
+		context.Background(),       // Нет поля для ACL
+		getConsumerCtx("unknown"),  // Поле есть, неизвестный консюмер
+		getConsumerCtx("biz_user"), // Поле есть, нет доступа
 	} {
 		_, err = biz.Test(ctx, &Nothing{})
 		if err == nil {
@@ -144,7 +144,7 @@ func TestACL(t *testing.T) {
 		}
 	}
 
-	// есть доступ
+	// Есть доступ
 	_, err = biz.Check(getConsumerCtx("biz_user"), &Nothing{})
 	if err != nil {
 		t.Fatalf("ACL fail: unexpected error: %v", err)
@@ -230,9 +230,9 @@ func TestLogging(t *testing.T) {
 				t.Errorf("bad host: %v", evt.GetHost())
 				return
 			}
-			// это грязный хак
-			// protobuf добавляет к структуре свои поля, которые не видны при приведении к строке и при reflect.DeepEqual
-			// поэтому берем не оригинал сообщения, а только нужные значения
+			// Это грязный хак.
+			// protobuf добавляет к структуре свои поля, которые не видны при приведении к строке и при reflect.DeepEqual.
+			// Поэтому берем не оригинал сообщения, а только нужные значения
 			logData1 = append(logData1, &Event{Consumer: evt.Consumer, Method: evt.Method})
 		}
 	}()
@@ -249,9 +249,9 @@ func TestLogging(t *testing.T) {
 				t.Errorf("bad host: %v", evt.GetHost())
 				return
 			}
-			// это грязный хак
-			// protobuf добавляет к структуре свои поля, которые не видны при приведении к строке и при reflect.DeepEqual
-			// поэтому берем не оригинал сообщения, а только нужные значения
+			// Это грязный хак.
+			// protobuf добавляет к структуре свои поля, которые не видны при приведении к строке и при reflect.DeepEqual.
+			// Поэтому берем не оригинал сообщения, а только нужные значения
 			logData2 = append(logData2, &Event{Consumer: evt.Consumer, Method: evt.Method})
 		}
 	}()
@@ -341,9 +341,9 @@ func TestStat(t *testing.T) {
 			}
 			// log.Println("stat1", stat, errTmp)
 			mu.Lock()
-			// это грязный хак
-			// protobuf добавляет к структуре свои поля, которые не видны при приведении к строке и при reflect.DeepEqual
-			// поэтому берем не оригинал сообщения, а только нужные значения
+			// Это грязный хак.
+			// protobuf добавляет к структуре свои поля, которые не видны при приведении к строке и при reflect.DeepEqual.
+			// Поэтому берем не оригинал сообщения, а только нужные значения
 			stat1 = &Stat{
 				ByMethod:   stat.ByMethod,
 				ByConsumer: stat.ByConsumer,
@@ -362,9 +362,9 @@ func TestStat(t *testing.T) {
 			}
 			// log.Println("stat2", stat, errTmp)
 			mu.Lock()
-			// это грязный хак
-			// protobuf добавляет к структуре свои поля, которые не видны при приведении к строке и при reflect.DeepEqual
-			// поэтому берем не оригинал сообщения, а только нужные значения
+			// Это грязный хак.
+			// protobuf добавляет к структуре свои поля, которые не видны при приведении к строке и при reflect.DeepEqual.
+			// Поэтому берем не оригинал сообщения, а только нужные значения
 			stat2 = &Stat{
 				ByMethod:   stat.ByMethod,
 				ByConsumer: stat.ByConsumer,
