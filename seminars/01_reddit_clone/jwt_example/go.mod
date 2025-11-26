@@ -1,4 +1,4 @@
-module jwt_example
+module gitlab.vk-golang.ru/vk-golang/lectures/seminars/01_reddit_clone/jwt_example
 
 go 1.25
 
