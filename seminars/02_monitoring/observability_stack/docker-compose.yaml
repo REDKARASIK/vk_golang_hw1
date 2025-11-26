@@ -1,0 +1,116 @@
+services:
+  redditclone:
+    image: golang:1.25-trixie
+    tty: true
+    ports:
+      - 8080:8080
+      - 6060:6060
+    volumes:
+      - ./../redditclone:/app
+      - redditclone-logs:/app/app-logs
+    networks:
+      - observability
+
+  vmagent:
+    image: victoriametrics/vmagent:latest
+    ports:
+      - "8429:8429"
+    command:
+      - --promscrape.config=/etc/vmagent/prometheus.yml
+      - --remoteWrite.url=http://victoria-metrics:8428/api/v1/write
+      - --httpListenAddr=:8429
+    volumes:
+      - ./vmagent-config.yml:/etc/vmagent/prometheus.yml
+    depends_on:
+      - victoria-metrics
+      - redditclone
+    networks:
+      - observability
+    restart: unless-stopped
+
+  # Victoria Metrics (Metrics Storage - faster than Prometheus)
+  victoria-metrics:
+    image: victoriametrics/victoria-metrics:latest
+    ports:
+      - "8428:8428"
+    command:
+      - --storageDataPath=/victoria-metrics-data
+      - --httpListenAddr=:8428
+      - --retentionPeriod=1
+    volumes:
+      - victoria-metrics-data:/victoria-metrics-data
+    networks:
+      - observability
+
+  # Victoria Logs (Logs DB - faster than Loki)
+  victoria-logs:
+    image: victoriametrics/victoria-logs:v1.38.0
+    ports:
+      - "9428:9428"
+    command:
+      - --storageDataPath=/victoria-logs-data
+      - --httpListenAddr=:9428
+      - --defaultMsgValue=msg
+    volumes:
+      - victoria-logs-data:/victoria-logs-data
+    networks:
+      - observability
+
+  promtail:
+    image: grafana/promtail:2.9.8
+    container_name: promtail
+    volumes:
+      # Mount the Docker socket to allow Promtail to read container metadata and logs
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./promtail-config.yaml:/etc/promtail/promtail-config.yaml
+      - redditclone-logs:/app-logs
+    command: -config.file=/etc/promtail/promtail-config.yaml
+    depends_on:
+      - victoria-logs
+    networks:
+      - observability
+
+  # Grafana (Visualization)
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,victoriametrics-logs-datasource
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on:
+      - victoria-metrics
+      - victoria-logs
+    networks:
+      - observability
+
+  # Node Exporter (System Metrics)
+  node-exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - "9100:9100"
+    command:
+      - --path.procfs=/host/proc
+      - --path.sysfs=/host/sys
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+    networks:
+      - observability
+
+
+volumes:
+  victoria-metrics-data:
+  victoria-logs-data:
+  grafana-data:
+  postgres-data:
+  redis-data:
+  redditclone-logs:
+
+networks:
+  observability:
+    driver: bridge
