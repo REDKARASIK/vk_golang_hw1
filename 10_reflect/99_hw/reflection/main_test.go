@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"reflect"
 	"testing"
-	// "fmt"
 )
 
 type Simple struct {
@@ -27,7 +26,6 @@ func TestSimple(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// fmt.Println(string(jsonRaw))
 
 	var tmpData interface{}
 	err = json.Unmarshal(jsonRaw, &tmpData)
@@ -68,7 +66,6 @@ func TestComplex(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// fmt.Println(string(jsonRaw))
 
 	var tmpData interface{}
 	err = json.Unmarshal(jsonRaw, &tmpData)
@@ -122,8 +119,8 @@ type ErrorCase struct {
 	JSONData string
 }
 
-// аккуратно в этом тесте
-// писать надо именно в то что пришло
+// Аккуратно в этом тесте
+// Писать надо именно в то что пришло
 func TestErrors(t *testing.T) {
 	cases := []ErrorCase{
 		// "Active":"DA" - string вместо bool
@@ -151,13 +148,13 @@ func TestErrors(t *testing.T) {
 			&Complex{},
 			`{"SubSimple":true,"ManySimple":[{"ID":42,"Username":"rvasily","Active":true}]}`,
 		},
-		// ожидаем структуру - пришел массив
+		// Ожидаем структуру - пришел массив
 		ErrorCase{
 			&Simple{},
 			`[{"ID":42,"Username":"rvasily","Active":true}]`,
 		},
-		// Simple{} ( без амперсанта, т.е. структура, а не указатель на структуру )
-		// пришел не ссылочный тип - мы не сможем вернуть результат
+		// Simple{} (без амперсанта, т.е. структура, а не указатель на структуру)
+		// Пришел не ссылочный тип, а значит мы не сможем вернуть результат
 		ErrorCase{
 			Simple{},
 			`{"ID":42,"Username":"rvasily","Active":true}`,
