@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+// curl "localhost:8080/session/?login=test"
+
 func (h *Handler) HandleGetSession(w http.ResponseWriter, r *http.Request) {
 	login := r.URL.Query().Get("login")
 
@@ -25,6 +27,8 @@ func (h *Handler) HandleGetSession(w http.ResponseWriter, r *http.Request) {
 	bytes, _ := json.Marshal(&resp)
 	w.Write(bytes)
 }
+
+// curl -X DELETE --cookie "session_id=tokenknsjkdfklsdf" localhost:8080/session/
 
 func (h *Handler) HandleDeleteSession(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("session_id")

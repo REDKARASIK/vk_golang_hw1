@@ -19,9 +19,14 @@ route:
       continue: true
     - receiver: email
 receivers:
-  - name: "alertmananger-bot"
-    webhook_configs:
-      - url: "http://alertmanager-bot:8080"
+  - name: "telegram-bot"
+    telegram_configs:
+      - chat_id: <chat_id>
+        bot_token: <bot_token>
+        api_url: "https://api.telegram.org"
+        send_resolved: true
+        parse_mode: HTML
+        message: '{{ template "telegram.default.message" . }}'
   - name: email
     email_configs:
       - send_resolved: false
