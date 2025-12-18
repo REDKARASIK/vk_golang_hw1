@@ -28,23 +28,11 @@ services:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
     volumes:
       - "./alertmanager:/etc/alertmanager"
-  alertmanager-bot:
-    image: metalmatze/alertmanager-bot
-    command:
-      - "--listen.addr=0.0.0.0:8080"
-    environment:
-      ALERTMANAGER_URL: http://alertmanager:9093
-      BOLT_PATH: /data/bot.db
-      STORE: bolt
-      TEMPLATE_PATHS: /templates/default.tmpl
-      TELEGRAM_ADMIN: 277336773
-      TELEGRAM_TOKEN: 5317869490:AAEdZkG04y8AMMOIiSIUjuoU25VoqsoLF10
-    volumes:
-      - "./alertmanager-bot/templates:/templates"
   jaeger:
-    image: jaegertracing/all-in-one
+    image: jaegertracing/jaeger
     ports:
-      - "6831:6831/udp"
+      - "4317:4317"
+      - "4318:4318"
       - "16686:16686"
   grafana:
     image: grafana/grafana

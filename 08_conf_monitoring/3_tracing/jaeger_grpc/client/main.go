@@ -7,12 +7,13 @@ import (
 	"net/http"
 	"time"
 
-	traceutils "github.com/opentracing-contrib/go-grpc"
-	"github.com/opentracing/opentracing-go"
-	"github.com/uber/jaeger-client-go"
-	jaegercfg "github.com/uber/jaeger-client-go/config"
-	jaegerlog "github.com/uber/jaeger-client-go/log"
-	"github.com/uber/jaeger-lib/metrics"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
+	"go.opentelemetry.io/otel/propagation"
+	"go.opentelemetry.io/otel/sdk/resource"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 
 	"google.golang.org/grpc"
 
@@ -92,35 +93,48 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-
-	jaegerCfgInstance := jaegercfg.Configuration{
-		ServiceName: "client",
-		Sampler: &jaegercfg.SamplerConfig{
-			Type:  jaeger.SamplerTypeConst,
-			Param: 1,
-		},
-		Reporter: &jaegercfg.ReporterConfig{
-			LogSpans:           true,
-			LocalAgentHostPort: "localhost:6831",
-		},
-	}
-
-	tracer, closer, err := jaegerCfgInstance.NewTracer(
-		jaegercfg.Logger(jaegerlog.StdLogger),
-		jaegercfg.Metrics(metrics.NullFactory),
+	ctx := context.Background()
+	traceExporter, err := otlptracegrpc.New(ctx,
+		otlptracegrpc.WithEndpoint("localhost:4317"),
+		otlptracegrpc.WithInsecure(),
 	)
-
 	if err != nil {
-		log.Fatal("cannot create tracer", err)
+		return
 	}
 
-	opentracing.SetGlobalTracer(tracer)
-	defer closer.Close()
+	// Создаем resource с информацией о сервисе
+	res, err := resource.New(ctx,
+		resource.WithAttributes(
+			semconv.ServiceNameKey.String("client"),
+		),
+	)
+	if err != nil {
+		log.Fatalf("failed to create resource: %v", err)
+	}
 
+	// Создаем провайдер трассировки
+	bsp := sdktrace.NewBatchSpanProcessor(traceExporter)
+	tracerProvider := sdktrace.NewTracerProvider(
+		sdktrace.WithResource(res),
+		sdktrace.WithSpanProcessor(bsp),
+		sdktrace.WithSampler(sdktrace.AlwaysSample()),
+	)
+	defer func() {
+		if err := tracerProvider.Shutdown(context.Background()); err != nil {
+			log.Printf("Error shutting down tracer provider: %v", err)
+		}
+	}()
+
+	// Устанавливаем глобальный провайдер трассировки
+	otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(propagation.TraceContext{}, propagation.Baggage{}))
+	otel.SetTracerProvider(tracerProvider)
+
+	// Создаем gRPC соединение с OpenTelemetry interceptor'ом
 	grcpConn, err := grpc.Dial(
 		"127.0.0.1:8081",
 		grpc.WithInsecure(),
-		grpc.WithUnaryInterceptor(traceutils.OpenTracingClientInterceptor(tracer)),
+		grpc.WithUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
+		grpc.WithStreamInterceptor(otelgrpc.StreamClientInterceptor()),
 	)
 	if err != nil {
 		log.Fatalf("cant connect to grpc")

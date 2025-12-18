@@ -45,6 +45,7 @@ func (api *BooksHandler) List(w http.ResponseWriter, _ *http.Request) {
 }
 
 // POST http://127.0.0.1:8080/book/ with form title=test&price=123
+// curl -X POST -d "title=MyBook&price=1000" localhost:8080/book/
 
 func (api *BooksHandler) Add(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
@@ -91,6 +92,8 @@ func (api *BooksHandler) BookByID(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(&Result{Body: body})
 }
+
+// curl -X PUT -d "title=MyBook&price=1000" localhost:8080/book/1
 
 func (api *BooksHandler) Change(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
