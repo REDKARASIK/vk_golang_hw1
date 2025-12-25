@@ -72,12 +72,12 @@ func (api *MyHandler) Login(w http.ResponseWriter, r *http.Request) {
 func (api *MyHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	session, err := r.Cookie("session_id")
 	if errors.Is(err, http.ErrNoCookie) {
-		http.Error(w, `no sess`, 401)
+		http.Error(w, `no sess`, http.StatusUnauthorized)
 		return
 	}
 
 	if _, ok := api.sessions[session.Value]; !ok {
-		http.Error(w, `no sess`, 401)
+		http.Error(w, `no sess`, http.StatusUnauthorized)
 		return
 	}
 

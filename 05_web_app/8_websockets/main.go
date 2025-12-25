@@ -44,6 +44,7 @@ func notificationsHandler(w http.ResponseWriter, r *http.Request) {
 
 func sendNewMsgNotifications(client *websocket.Conn) {
 	ticker := time.NewTicker(3 * time.Second)
+	defer ticker.Stop()
 	for {
 		w, err := client.NextWriter(websocket.TextMessage)
 		if err != nil {
