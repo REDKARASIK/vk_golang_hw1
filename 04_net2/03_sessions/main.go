@@ -43,11 +43,12 @@ func NewMyHandler() *MyHandler {
 }
 
 // http://127.0.0.1:8080/login?login=rvasily&password=love
+// curl -X POST -c cookie -d "login=rvasily&password=love" localhost:8080/login
 
 func (api *MyHandler) Login(w http.ResponseWriter, r *http.Request) {
 	user, ok := api.users[r.FormValue("login")]
 	if !ok {
-		http.Error(w, `no user`, 404)
+		http.Error(w, `no user`, 400)
 		return
 	}
 
@@ -64,10 +65,14 @@ func (api *MyHandler) Login(w http.ResponseWriter, r *http.Request) {
 		Name:    "session_id",
 		Value:   SID,
 		Expires: time.Now().Add(10 * time.Hour),
+		// HttpOnly: true,
+		// Secure: true,
 	}
 	http.SetCookie(w, cookie)
 	w.Write([]byte(SID))
 }
+
+// curl -b cookie.txt localhost:8080/logout
 
 func (api *MyHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	session, err := r.Cookie("session_id")
@@ -86,6 +91,8 @@ func (api *MyHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	session.Expires = time.Now().AddDate(0, 0, -1)
 	http.SetCookie(w, session)
 }
+
+// curl -b cookie localhost:8080
 
 func (api *MyHandler) Root(w http.ResponseWriter, r *http.Request) {
 	authorized := false

@@ -11,7 +11,10 @@ import (
 // go run dotenv.go
 // docker run  -v $(pwd):/repo -w /repo --env-file=.env -it golang:latest go run dotenv.go
 func main() {
+	// не перезаписывает значения переменных из окружения
 	err := godotenv.Load(".env")
+	// перезаписывает значения переменных из окружения
+	// err := godotenv.Overload(".env")
 	if err != nil {
 		log.Fatalln(err)
 	}
